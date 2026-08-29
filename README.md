@@ -79,7 +79,9 @@ predictions are in `experiments/official_test_per_clip_results.parquet`. The ful
 ablations, and reasoning behind the finalist selection are written up in
 [docs/RESULTS.md](docs/RESULTS.md). For every experiment that led up to it — architecture
 selection, context-length probing, the pause-event/hold-loss objective, data scaling, distillation,
-and ranking — see [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md).
+and ranking — see [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). For the exploratory data analysis
+behind several of those decisions (dataset composition, label semantics, feature usefulness, context
+window, and more), see [docs/EDA.md](docs/EDA.md).
 
 The frozen checkpoint, its config/metrics, and an exported ONNX model (plus an int8-quantized
 variant) live under
@@ -97,8 +99,12 @@ variant) live under
   in the project, the official-result artifacts, and the audits that gated the finalist choice
   (matched-recall audit, VAD boundary diagnostic, padding counterfactual, temperature scaling,
   ground-truth-conditioned metric audit).
-- `docs/` — [EXPERIMENTS.md](docs/EXPERIMENTS.md), the full chronological experiment log, and
-  [RESULTS.md](docs/RESULTS.md), the deep dive on the final phase.
+- `eda_outputs/` — the plots and result tables behind the exploratory data analysis: dataset
+  composition/bias checks, DSP feature usefulness, context-window findings, and more (see
+  [docs/EDA.md](docs/EDA.md)).
+- `docs/` — [EXPERIMENTS.md](docs/EXPERIMENTS.md), the full chronological experiment log;
+  [RESULTS.md](docs/RESULTS.md), the deep dive on the final phase; and [EDA.md](docs/EDA.md), the
+  exploratory data analysis that motivated several of the modeling decisions along the way.
 
 This is a curated subset of a larger research project: every experiment's results are here, but
 per-experiment checkpoints (other than the finalist's), exploratory notebooks, and raw training
