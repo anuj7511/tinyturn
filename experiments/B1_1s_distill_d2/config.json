@@ -1,0 +1,17 @@
+{
+  "exp_id": "B1_1s_distill_d2",
+  "teacher_target": "d2",
+  "context_s": 1.0,
+  "epochs": 5,
+  "early_stop_patience": null,
+  "lr_schedule": null,
+  "batch_size": 64,
+  "lr": 0.001,
+  "num_workers": 2,
+  "mel_channels": 112,
+  "traj_channels": 24,
+  "seed": 42,
+  "T": 2.0,
+  "alpha": 0.5,
+  "teacher_logits_path": "data_cache\\teacher_logits_a0_boundary_robust_train.parquet"
+}

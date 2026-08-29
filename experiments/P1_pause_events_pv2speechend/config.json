@@ -1,0 +1,14 @@
+{
+  "exp_id": "P1_pv2speechend",
+  "context_s": 1.0,
+  "epochs": 5,
+  "batch_size": 64,
+  "lr": 0.001,
+  "num_workers": 2,
+  "mel_channels": 112,
+  "traj_channels": 24,
+  "seed": 42,
+  "lambda_hold": null,
+  "controlled_sampling": false,
+  "real_synth_balance": "proportional"
+}

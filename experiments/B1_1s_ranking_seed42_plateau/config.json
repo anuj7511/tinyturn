@@ -1,0 +1,15 @@
+{
+  "exp_id": "B1_1s_ranking_seed42_plateau",
+  "context_s": 1.0,
+  "epochs": 40,
+  "early_stop_patience": 6,
+  "lr_schedule": "plateau",
+  "batch_size": 64,
+  "lr": 0.001,
+  "num_workers": 0,
+  "mel_channels": 112,
+  "traj_channels": 24,
+  "seed": 42,
+  "margin": 0.2,
+  "rank_weight": 0.1
+}

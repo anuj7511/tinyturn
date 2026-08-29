@@ -1,0 +1,14 @@
+{
+  "exp_id": "C1_B1_1s",
+  "context_s": 1.0,
+  "postroll_s": 0.2,
+  "use_trajectory": true,
+  "use_f0": false,
+  "epochs": 5,
+  "batch_size": 64,
+  "lr": 0.001,
+  "num_workers": 2,
+  "mel_channels": 112,
+  "traj_channels": 24,
+  "seed": 42
+}

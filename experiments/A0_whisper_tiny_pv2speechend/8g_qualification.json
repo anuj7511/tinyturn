@@ -1,0 +1,53 @@
+{
+  "padding_criterion": {
+    "pass": true,
+    "detail": {
+      "n": 118,
+      "context_s": 4.0,
+      "threshold": 0.8437,
+      "schemes_tested": [
+        "zero",
+        "noise",
+        "noise_large",
+        "repeat"
+      ],
+      "mean_abs_prob_change": 0.0,
+      "frac_change_gt_0.10": 0.0,
+      "decision_flip_rate_at_threshold": 0.0,
+      "criterion_mean_abs_change_le_0.02": true,
+      "criterion_frac_gt_010_le_0.01": true,
+      "criterion_flip_rate_le_0.01": true
+    }
+  },
+  "vad_boundary_criterion": {
+    "pass": false,
+    "per_alternative": {
+      "silero_vad": false,
+      "energy_alt": false
+    },
+    "detail": {
+      "silero_vad": {
+        "n": 43,
+        "frac_change_gt_0.20": 0.11628,
+        "decision_flip_rate_at_threshold": 0.09302,
+        "criterion_frac_gt_020_le_0.10": false,
+        "criterion_flip_rate_le_0.05": false,
+        "real_fcr_note": "skipped: only 7 real-audio rows in this pilot overlap (need >= 20 with both classes) -- not a meaningful ROC-based estimate at this n"
+      },
+      "energy_alt": {
+        "n": 43,
+        "frac_change_gt_0.20": 0.06977,
+        "decision_flip_rate_at_threshold": 0.09302,
+        "criterion_frac_gt_020_le_0.10": true,
+        "criterion_flip_rate_le_0.05": false,
+        "real_fcr_note": "skipped: only 7 real-audio rows in this pilot overlap (need >= 20 with both classes) -- not a meaningful ROC-based estimate at this n"
+      }
+    },
+    "notes": [
+      "silero_vad: skipped: only 7 real-audio rows in this pilot overlap (need >= 20 with both classes) -- not a meaningful ROC-based estimate at this n",
+      "energy_alt: skipped: only 7 real-audio rows in this pilot overlap (need >= 20 with both classes) -- not a meaningful ROC-based estimate at this n"
+    ]
+  },
+  "teacher_qualified": false,
+  "caveat": "The VAD-boundary check ran on the 206-clip pilot overlap (Phase-2 8f), which is explicitly a development/pilot set, not a hard-gate-sized sample. If frac_gt_0.20 or flip_rate look borderline, or the real-audio FCR degradation couldn't be computed at this n, recompute alternative boundaries on the full 3,000-clip E5 sample (Phase-2 8f) before treating this qualification as final."
+}

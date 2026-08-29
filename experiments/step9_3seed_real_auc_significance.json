@@ -1,0 +1,78 @@
+{
+  "P1ab_lambda0.5_all": {
+    "42": {
+      "real_auc_arm": 0.7060865191146881,
+      "real_auc_baseline": 0.7436116700201207,
+      "observed_diff_arm_minus_baseline": -0.037525150905432625,
+      "ci_95": [
+        -0.07299925496492582,
+        -0.003415492957746627
+      ],
+      "p_value": 0.027,
+      "n_real": 282,
+      "distinguishable_from_noise": true
+    },
+    "43": {
+      "real_auc_arm": 0.700301810865191,
+      "real_auc_baseline": 0.7533199195171026,
+      "observed_diff_arm_minus_baseline": -0.05301810865191159,
+      "ci_95": [
+        -0.09924688680700136,
+        -0.008789137398824667
+      ],
+      "p_value": 0.025,
+      "n_real": 282,
+      "distinguishable_from_noise": true
+    },
+    "44": {
+      "real_auc_arm": 0.6961770623742455,
+      "real_auc_baseline": 0.7665995975855131,
+      "observed_diff_arm_minus_baseline": -0.07042253521126762,
+      "ci_95": [
+        -0.11083109725451956,
+        -0.028273501426211885
+      ],
+      "p_value": 0.003,
+      "n_real": 282,
+      "distinguishable_from_noise": true
+    }
+  },
+  "P1ab_lambda0.5_5050": {
+    "42": {
+      "real_auc_arm": 0.7106639839034206,
+      "real_auc_baseline": 0.7436116700201207,
+      "observed_diff_arm_minus_baseline": -0.03294768611670018,
+      "ci_95": [
+        -0.07826516075086004,
+        0.015097781154826772
+      ],
+      "p_value": 0.182,
+      "n_real": 282,
+      "distinguishable_from_noise": false
+    },
+    "43": {
+      "real_auc_arm": 0.7030684104627767,
+      "real_auc_baseline": 0.7533199195171026,
+      "observed_diff_arm_minus_baseline": -0.05025150905432596,
+      "ci_95": [
+        -0.09529153932104238,
+        -0.006055109631858439
+      ],
+      "p_value": 0.026,
+      "n_real": 282,
+      "distinguishable_from_noise": true
+    },
+    "44": {
+      "real_auc_arm": 0.67761569416499,
+      "real_auc_baseline": 0.7665995975855131,
+      "observed_diff_arm_minus_baseline": -0.08898390342052309,
+      "ci_95": [
+        -0.1398344291372737,
+        -0.042683622832004164
+      ],
+      "p_value": 0.0,
+      "n_real": 282,
+      "distinguishable_from_noise": true
+    }
+  }
+}

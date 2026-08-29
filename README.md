@@ -77,7 +77,9 @@ Full breakdown (per-language, per-source, calibration, confidence intervals) is 
 [experiments/official_test_report.json](experiments/official_test_report.json); per-clip
 predictions are in `experiments/official_test_per_clip_results.parquet`. The full methodology,
 ablations, and reasoning behind the finalist selection are written up in
-[docs/RESULTS.md](docs/RESULTS.md).
+[docs/RESULTS.md](docs/RESULTS.md). For every experiment that led up to it — architecture
+selection, context-length probing, the pause-event/hold-loss objective, data scaling, distillation,
+and ranking — see [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md).
 
 The frozen checkpoint, its config/metrics, and an exported ONNX model (plus an int8-quantized
 variant) live under
@@ -91,13 +93,16 @@ variant) live under
 - `scripts/` — the runnable experiment/evaluation scripts built on top of `tinyturn/`, including
   `run_official_test_evaluation.py`, the script that produced the official result above.
 - `tests/` — unit tests for the `tinyturn` package.
-- `experiments/` — official-result artifacts and the audits that gated the finalist choice
+- `experiments/` — a `config.json`/`metrics.json` (or nearest equivalent) for every experiment run
+  in the project, the official-result artifacts, and the audits that gated the finalist choice
   (matched-recall audit, VAD boundary diagnostic, padding counterfactual, temperature scaling,
   ground-truth-conditioned metric audit).
-- `docs/` — the final results write-up ([RESULTS.md](docs/RESULTS.md)).
+- `docs/` — [EXPERIMENTS.md](docs/EXPERIMENTS.md), the full chronological experiment log, and
+  [RESULTS.md](docs/RESULTS.md), the deep dive on the final phase.
 
-This is a curated subset of a larger research project; per-experiment checkpoints, exploratory
-notebooks, and intermediate logs are not included here.
+This is a curated subset of a larger research project: every experiment's results are here, but
+per-experiment checkpoints (other than the finalist's), exploratory notebooks, and raw training
+logs are not.
 
 ## Setup
 

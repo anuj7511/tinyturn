@@ -1,0 +1,16 @@
+{
+  "exp_id": "B1_1s_64k_lambda0.5_5050_seed44",
+  "context_s": 1.0,
+  "epochs": 40,
+  "early_stop_patience": 6,
+  "lr_schedule": "plateau",
+  "batch_size": 64,
+  "lr": 0.001,
+  "num_workers": 6,
+  "mel_channels": 112,
+  "traj_channels": 24,
+  "seed": 44,
+  "lambda_hold": 0.5,
+  "controlled_sampling": true,
+  "real_synth_balance": "50:50"
+}

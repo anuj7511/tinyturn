@@ -1,0 +1,32 @@
+{
+  "baseline_at_own_threshold": {
+    "threshold": 0.7541,
+    "all": {
+      "n": 2128,
+      "fcr": 0.1819
+    },
+    "real": {
+      "n": 361,
+      "fcr": 0.1247
+    },
+    "synthetic": {
+      "n": 1767,
+      "fcr": 0.1935
+    }
+  },
+  "p1_at_own_threshold": {
+    "threshold": 0.5952,
+    "all": {
+      "n": 2128,
+      "fcr": 0.0498
+    },
+    "real": {
+      "n": 361,
+      "fcr": 0.0332
+    },
+    "synthetic": {
+      "n": 1767,
+      "fcr": 0.0532
+    }
+  }
+}

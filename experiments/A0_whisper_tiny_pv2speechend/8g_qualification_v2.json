@@ -1,0 +1,272 @@
+{
+  "n_val_clips": 1600,
+  "safety_critical_flip_rate_bound": 0.02,
+  "padding_criterion": {
+    "n": 118,
+    "gates": [
+      {
+        "name": "padding_mean_abs_dprob",
+        "point": 0.0,
+        "ci_95": [
+          0.0,
+          0.0
+        ],
+        "threshold": 0.02,
+        "verdict": "decisive-pass",
+        "gate_pass": true
+      },
+      {
+        "name": "padding_frac_gt_0.10",
+        "point": 0.0,
+        "ci_95": [
+          0.0,
+          0.03153
+        ],
+        "threshold": 0.01,
+        "verdict": "inconclusive",
+        "gate_pass": false
+      },
+      {
+        "name": "padding_flip_rate",
+        "point": 0.0,
+        "ci_95": [
+          0.0,
+          0.03153
+        ],
+        "threshold": 0.01,
+        "verdict": "inconclusive",
+        "gate_pass": false
+      }
+    ],
+    "pass": false
+  },
+  "vad_boundary_criterion": {
+    "pass": false,
+    "per_alternative": {
+      "alt_threshold": {
+        "n": 1600,
+        "gates": [
+          {
+            "name": "alt_threshold_frac_gt_0.20",
+            "point": 0.08313,
+            "ci_95": [
+              0.07058,
+              0.09767
+            ],
+            "threshold": 0.1,
+            "verdict": "decisive-pass",
+            "gate_pass": true
+          },
+          {
+            "name": "alt_threshold_flip_rate",
+            "point": 0.105,
+            "ci_95": [
+              0.09091,
+              0.12098
+            ],
+            "threshold": 0.05,
+            "verdict": "decisive-fail",
+            "gate_pass": false
+          },
+          {
+            "name": "alt_threshold_real_fcr_degradation_pp",
+            "point": 0.71429,
+            "ci_95": [
+              -6.21729,
+              8.40131
+            ],
+            "threshold": 2.0,
+            "verdict": "inconclusive",
+            "gate_pass": false,
+            "n_real": 282,
+            "n_boot_valid": 200
+          }
+        ],
+        "pass": false
+      },
+      "silero_vad": {
+        "n": 1600,
+        "gates": [
+          {
+            "name": "silero_vad_frac_gt_0.20",
+            "point": 0.11625,
+            "ci_95": [
+              0.10146,
+              0.13288
+            ],
+            "threshold": 0.1,
+            "verdict": "decisive-fail",
+            "gate_pass": false
+          },
+          {
+            "name": "silero_vad_flip_rate",
+            "point": 0.1225,
+            "ci_95": [
+              0.10733,
+              0.13948
+            ],
+            "threshold": 0.05,
+            "verdict": "decisive-fail",
+            "gate_pass": false
+          },
+          {
+            "name": "silero_vad_real_fcr_degradation_pp",
+            "point": -1.42857,
+            "ci_95": [
+              -8.7832,
+              5.00658
+            ],
+            "threshold": 2.0,
+            "verdict": "inconclusive",
+            "gate_pass": false,
+            "n_real": 282,
+            "n_boot_valid": 200
+          }
+        ],
+        "pass": false
+      }
+    }
+  },
+  "direction_specific_criterion": {
+    "alt_threshold": {
+      "safety_critical": {
+        "name": "alt_threshold_safety_critical_flip_rate",
+        "point": 0.10761,
+        "ci_95": [
+          0.08976,
+          0.12851
+        ],
+        "threshold": 0.02,
+        "verdict": "decisive-fail",
+        "gate_pass": false,
+        "n_canonical_incomplete": 985,
+        "n_flips_to_complete": 106
+      },
+      "latency_critical": {
+        "name": "alt_threshold_latency_critical_flip_rate",
+        "point": 0.10081,
+        "ci_95": [
+          0.07944,
+          0.12714
+        ],
+        "threshold": 0.05,
+        "verdict": "decisive-fail",
+        "gate_pass": false,
+        "n_canonical_complete": 615,
+        "n_flips_to_incomplete": 62
+      },
+      "real_audio_safety_critical": {
+        "name": "alt_threshold_real_audio_safety_critical_flip_rate",
+        "point": 0.14444,
+        "ci_95": [
+          0.10052,
+          0.20323
+        ],
+        "threshold": 0.02,
+        "verdict": "decisive-fail",
+        "gate_pass": false,
+        "n_real_canonical_incomplete": 180,
+        "n_real_flips_to_complete": 26
+      }
+    },
+    "silero_vad": {
+      "safety_critical": {
+        "name": "silero_vad_safety_critical_flip_rate",
+        "point": 0.14416,
+        "ci_95": [
+          0.12361,
+          0.16748
+        ],
+        "threshold": 0.02,
+        "verdict": "decisive-fail",
+        "gate_pass": false,
+        "n_canonical_incomplete": 985,
+        "n_flips_to_complete": 142
+      },
+      "latency_critical": {
+        "name": "silero_vad_latency_critical_flip_rate",
+        "point": 0.0878,
+        "ci_95": [
+          0.06792,
+          0.11281
+        ],
+        "threshold": 0.05,
+        "verdict": "decisive-fail",
+        "gate_pass": false,
+        "n_canonical_complete": 615,
+        "n_flips_to_incomplete": 54
+      },
+      "real_audio_safety_critical": {
+        "name": "silero_vad_real_audio_safety_critical_flip_rate",
+        "point": 0.19444,
+        "ci_95": [
+          0.14326,
+          0.25839
+        ],
+        "threshold": 0.02,
+        "verdict": "decisive-fail",
+        "gate_pass": false,
+        "n_real_canonical_incomplete": 180,
+        "n_real_flips_to_complete": 35
+      }
+    }
+  },
+  "false_complete_degradation_at_matched_recall": {
+    "alt_threshold": {
+      "overall": {
+        "n": 1600,
+        "metric": "fcr_at_matched_recall95",
+        "fcr_canonical": 0.23845,
+        "fcr_alt": 0.22597,
+        "degradation_pp": -1.248,
+        "ci_95_pp": [
+          -3.926,
+          2.185
+        ],
+        "verdict": "inconclusive"
+      },
+      "implicit_incomplete": {
+        "n": 757,
+        "metric": "fcr_at_fixed_threshold (single-class fallback)",
+        "fcr_canonical": 0.07133,
+        "fcr_alt": 0.08587,
+        "degradation_pp": 1.453,
+        "ci_95_pp": [
+          -0.132,
+          2.774
+        ],
+        "verdict": "inconclusive"
+      }
+    },
+    "silero_vad": {
+      "overall": {
+        "n": 1600,
+        "metric": "fcr_at_matched_recall95",
+        "fcr_canonical": 0.23845,
+        "fcr_alt": 0.20974,
+        "degradation_pp": -2.871,
+        "ci_95_pp": [
+          -5.406,
+          2.444
+        ],
+        "verdict": "inconclusive"
+      },
+      "implicit_incomplete": {
+        "n": 757,
+        "metric": "fcr_at_fixed_threshold (single-class fallback)",
+        "fcr_canonical": 0.07133,
+        "fcr_alt": 0.09115,
+        "degradation_pp": 1.982,
+        "ci_95_pp": [
+          0.661,
+          3.57
+        ],
+        "verdict": "inconclusive"
+      }
+    }
+  },
+  "any_gate_inconclusive": true,
+  "teacher_qualified": false,
+  "verdict_note": "FAIL. Aggregate VAD-boundary criterion fails decisively at n=1600 (not just borderline as at the old n=43), and the new direction-specific safety-critical flip bound also fails. Inconclusive gates are treated as blocking failures for Step 10, not as passes.",
+  "open_dependency": "Remediation (retrain a boundary-robust A0 via train-time boundary augmentation) is explicitly conditioned in the brief on 'if CONVERGED A0 fails the VAD gate'. A0's own convergence has never been checked the way 8h checked B1's (PHASE2_RESULTS_8a-9.md: 'A0's val AUC was still rising at its final (2nd) epoch'). This script does not run remediation -- 8h-A0 (confirm A0 convergence) is the required next step before a remediation retrain would even be interpretable: retraining against a possibly-undertrained checkpoint would make it impossible to tell whether augmentation fixed boundary sensitivity or fixing convergence would have on its own."
+}

@@ -1,0 +1,15 @@
+{
+  "exp_id": "B1_1s_64k_baseline",
+  "context_s": 1.0,
+  "use_trajectory": true,
+  "use_f0": false,
+  "epochs": 40,
+  "early_stop_patience": 6,
+  "lr_schedule": "plateau",
+  "batch_size": 64,
+  "lr": 0.001,
+  "num_workers": 6,
+  "mel_channels": 112,
+  "traj_channels": 24,
+  "seed": 42
+}

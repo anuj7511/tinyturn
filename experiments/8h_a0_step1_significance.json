@@ -1,0 +1,15 @@
+{
+  "metric_a": 0.9378405278758248,
+  "metric_b": 0.9372092768894952,
+  "observed_diff": 0.0006312509863296567,
+  "ci_95": [
+    -0.004453312773569587,
+    0.005789993047200968
+  ],
+  "p_value": 0.811,
+  "n_boot_used": 2000,
+  "n": 1600,
+  "distinguishable_from_noise": false,
+  "a": "original_fixed_2epoch (A0_whisper_tiny_pv2speechend)",
+  "b": "kaggle_early_stopped_retrain (A0_4s_kaggle_longrun)"
+}

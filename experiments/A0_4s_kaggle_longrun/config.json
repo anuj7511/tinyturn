@@ -1,0 +1,12 @@
+{
+  "exp_id": "A0_4s_kaggle_longrun",
+  "context_s": 4.0,
+  "epochs": 10,
+  "early_stop_patience": 3,
+  "lr_schedule": "plateau",
+  "batch_size": 32,
+  "lr": 1e-05,
+  "num_workers": 4,
+  "seed": 42,
+  "model_name": "openai/whisper-tiny"
+}
