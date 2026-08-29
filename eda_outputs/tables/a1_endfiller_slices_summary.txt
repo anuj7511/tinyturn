@@ -1,0 +1,217 @@
+=== synthetic=True ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False       143013    36334  106679      25.41     74.59
+True         72052    72052       0     100.00      0.00
+unknown       8278     4293    3985      51.86     48.14
+
+=== synthetic=False ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+unknown      47603    23962   23641      50.34     49.66
+
+=== source=chirp3_1 ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False        95162    22592   72570      23.74     76.26
+True         51465    51465       0     100.00      0.00
+
+=== source=chirp3_2 ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False        47375    13605   33770      28.72     71.28
+True         20271    20271       0     100.00      0.00
+
+=== source=liva_1 ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+unknown      30922    15512   15410      50.16     49.84
+
+=== source=midcentury_1 ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+unknown       8489     4390    4099      51.71     48.29
+
+=== source=mundo_1 ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+unknown       3986     1997    1989       50.1      49.9
+
+=== source=human_5 ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+unknown       3527     1707    1820       48.4      51.6
+
+=== source=rime_2 ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+unknown       3505     1902    1603      54.27     45.73
+
+=== source=orpheus_endfiller_1 ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+unknown       1661      857     804       51.6      48.4
+
+=== source=orpheus_grammar_1 ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+unknown       1570      759     811      48.34     51.66
+
+=== source=orpheus_midfiller_1 ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+unknown       1542      775     767      50.26     49.74
+
+=== language=eng ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         9232     2426    6806      26.28     73.72
+True          4675     4675       0     100.00      0.00
+unknown      51895    26258   25637      50.60     49.40
+
+=== language=spa ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         8010     2042    5968      25.49     74.51
+True          4037     4037       0     100.00      0.00
+unknown       3986     1997    1989      50.10     49.90
+
+=== language=rus ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         8672     2286    6386      26.36     73.64
+True          4294     4294       0     100.00      0.00
+
+=== language=por ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         8572     2273    6299      26.52     73.48
+True          4220     4220       0     100.00      0.00
+
+=== language=nld ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         8315     2072    6243      24.92     75.08
+True          4203     4203       0     100.00      0.00
+
+=== language=deu ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         7974     1997    5977      25.04     74.96
+True          4084     4084       0     100.00      0.00
+
+=== language=hin ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         7860     1944    5916      24.73     75.27
+True          4146     4146       0     100.00      0.00
+
+=== language=fra ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         7516     1825    5691      24.28     75.72
+True          3995     3995       0     100.00      0.00
+
+=== language=pol ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         5331     1162    4169       21.8      78.2
+True          3166     3166       0      100.0       0.0
+
+=== language=tur ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         5091      988    4103      19.41     80.59
+True          3122     3122       0     100.00      0.00
+
+=== language=kor ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         5020      944    4076       18.8      81.2
+True          3144     3144       0      100.0       0.0
+
+=== language=zho ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         5163     1106    4057      21.42     78.58
+True          2996     2996       0     100.00      0.00
+
+=== language=ind ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         5683     1636    4047      28.79     71.21
+True          2406     2406       0     100.00      0.00
+
+=== language=ben ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         5606     1597    4009      28.49     71.51
+True          2400     2400       0     100.00      0.00
+
+=== language=vie ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         5612     1624    3988      28.94     71.06
+True          2379     2379       0     100.00      0.00
+
+=== language=nor ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         5573     1617    3956      29.01     70.99
+True          2399     2399       0     100.00      0.00
+
+=== language=fin ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         5553     1578    3975      28.42     71.58
+True          2386     2386       0     100.00      0.00
+
+=== language=ara ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         5164     1466    3698      28.39     71.61
+True          2232     2232       0     100.00      0.00
+
+=== language=jpn ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         4532      838    3694      18.49     81.51
+True          2857     2857       0     100.00      0.00
+
+=== language=ukr ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         5134     1448    3686       28.2      71.8
+True          2146     2146       0      100.0       0.0
+
+=== language=ita ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         4350      826    3524      18.99     81.01
+True          2842     2842       0     100.00      0.00
+
+=== language=dan ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         4574     1324    3250      28.95     71.05
+True          1984     1984       0     100.00      0.00
+
+=== language=mar ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         4476     1315    3161      29.38     70.62
+True          1939     1939       0     100.00      0.00
+
+=== Hindi ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         7860     1944    5916      24.73     75.27
+True          4146     4146       0     100.00      0.00
+
+=== English ===
+           n_total  n_False  n_True  pct_False  pct_True
+endfiller                                               
+False         9232     2426    6806      26.28     73.72
+True          4675     4675       0     100.00      0.00
+unknown      51895    26258   25637      50.60     49.40
+

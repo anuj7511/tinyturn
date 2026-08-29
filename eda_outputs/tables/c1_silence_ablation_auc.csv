@@ -1,0 +1,3 @@
+feature,original,speech_cropped,fixed_200ms,randomized_tail
+energy_slope_1000ms,0.651,0.64,0.643,0.648
+f0_slope_1000ms,0.694,0.683,0.689,0.695

@@ -1,0 +1,13 @@
+dataset,n_total,n_False,n_True,pct_False,pct_True
+chirp3_1,146627,0,146627,0.0,100.0
+chirp3_2,67646,0,67646,0.0,100.0
+chirp3_3_short,792,0,792,0.0,100.0
+human_5,3527,3527,0,100.0,0.0
+human_convcollector_1,679,679,0,100.0,0.0
+liva_1,30922,30922,0,100.0,0.0
+midcentury_1,8489,8489,0,100.0,0.0
+mundo_1,3986,3986,0,100.0,0.0
+orpheus_endfiller_1,1661,0,1661,0.0,100.0
+orpheus_grammar_1,1570,0,1570,0.0,100.0
+orpheus_midfiller_1,1542,0,1542,0.0,100.0
+rime_2,3505,0,3505,0.0,100.0

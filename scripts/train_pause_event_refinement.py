@@ -2,7 +2,7 @@
 Phase-2 Step 9 -- pause-event refinement.
 
 1. "Before anything else": retrain a fresh, contract-correct P1 (Step 7's original unweighted
-   blend, `lambda_hold=None`) against the C1_B1_1s_pv2speechend baseline (Phase-2 8d), then plot
+   blend, `lambda_hold=None`) against the mel_trajectory_1s_speech_aligned_contract baseline (Phase-2 8d), then plot
    the *matched-threshold* comparison the brief asks for: recall on complete final turns (x-axis)
    vs. FCR on internal holds (y-axis), sweeping threshold for each model, plus
    `implicit_incomplete` FCR at the same matched thresholds. This is the single-point comparison
@@ -33,9 +33,9 @@ from tinyturn.train import TRAJECTORY_NAMES
 from tinyturn.train_p1 import P1Config, train_p1
 from torch.utils.data import DataLoader
 
-BASELINE_DIR = Path("experiments") / "C1_B1_1s_pv2speechend"
-PLAIN_P1_DIR = Path("experiments") / "P1_pause_events_pv2speechend"
-OUT_DIR = Path("experiments") / "step9_pause_refinement"
+BASELINE_DIR = Path("experiments") / "mel_trajectory_1s_speech_aligned_contract"
+PLAIN_P1_DIR = Path("experiments") / "pause_events_contract_fixed_plain"
+OUT_DIR = Path("experiments") / "pause_events_matched_threshold_curves"
 CONTEXT_S = 1.0
 TARGET_RECALLS = [0.90, 0.95]
 

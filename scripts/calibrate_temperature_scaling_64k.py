@@ -43,14 +43,14 @@ TARGET_FCR = 0.05
 
 CHECKPOINTS = {
     "B1_64k_baseline": {
-        42: "experiments/B1_1s_64k_baseline",
-        43: "experiments/B1_1s_64k_baseline_seed43",
-        44: "experiments/B1_1s_64k_baseline_seed44",
+        42: "experiments/data_scale_64k_baseline_seed42",
+        43: "experiments/data_scale_64k_baseline_seed43",
+        44: "experiments/data_scale_64k_baseline_seed44",
     },
     "B1_64k_lambda0.5_5050": {
-        42: "experiments/B1_1s_64k_lambda0.5_5050",
-        43: "experiments/B1_1s_64k_lambda0.5_5050_seed43",
-        44: "experiments/B1_1s_64k_lambda0.5_5050_seed44",
+        42: "experiments/data_scale_64k_holdloss0.5_5050sampling_seed42",
+        43: "experiments/data_scale_64k_holdloss0.5_5050sampling_seed43",
+        44: "experiments/data_scale_64k_holdloss0.5_5050sampling_seed44",
     },
 }
 

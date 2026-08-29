@@ -26,7 +26,7 @@ def main():
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()
 
-    exp_id = "B1_1s_64k_baseline" if args.seed == 42 else f"B1_1s_64k_baseline_seed{args.seed}"
+    exp_id = "data_scale_64k_baseline_seed42" if args.seed == 42 else f"data_scale_64k_baseline_seed42_seed{args.seed}"
     cfg = ExperimentConfig(
         exp_id=exp_id, context_s=1.0, use_trajectory=True, use_f0=False,
         epochs=40, early_stop_patience=6, lr_schedule="plateau",

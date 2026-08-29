@@ -1,7 +1,7 @@
 """
 Phase-2 8e -- padding counterfactual on the corrected A0 (feeds Section 8g's padding criterion).
 
-On the retrained, speech-aligned-contract A0 checkpoint (`experiments/A0_whisper_tiny_pv2speechend`,
+On the retrained, speech-aligned-contract A0 checkpoint (`experiments/whisper_tiny_speech_aligned_contract`,
 produced by retrain_a0_speech_aligned_contract.py): take val-split clips short enough that build_example needs
 substantial left-padding, build variants that share identical VALID (real) audio and differ only in
 what fills the padded region -- zero (production default), small noise, large noise, and a repeat
@@ -48,7 +48,7 @@ WAV_DIR = CACHE_DIR / "d2_stratified_wavs"
 # Optional sys.argv[1]: run against a different checkpoint dir (e.g. the 8g-remediation boundary-
 # robust retrain) without touching the canonical A0's own recorded result. Output is always written
 # inside EXP_DIR, so a different EXP_DIR can never clobber the canonical file.
-EXP_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("experiments") / "A0_whisper_tiny_pv2speechend"
+EXP_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("experiments") / "whisper_tiny_speech_aligned_contract"
 RNG_SEED = 42
 SUBSTANTIAL_PAD_FRAC = 0.8  # "short enough to require substantial padding" (8g): at least 20% of
                             # the window is left-padding, i.e. speech_end_s < context_s * this.
@@ -162,7 +162,7 @@ def main():
         "criterion_frac_gt_010_le_0.01": bool(frac_change_gt_010 <= 0.01),
         "criterion_flip_rate_le_0.01": bool(flip_rate <= 0.01),
     }
-    out_path = EXP_DIR / "8e_padding_counterfactual.json"
+    out_path = EXP_DIR / "padding_counterfactual.json"
     with open(out_path, "w") as f:
         json.dump({"summary": result, "per_clip": rows}, f, indent=2, default=str)
 

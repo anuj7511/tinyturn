@@ -22,9 +22,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from tinyturn.train_p1 import P1Config, train_p1
 
 SEED_BASELINE_CHECKPOINTS = {
-    42: Path("experiments") / "B1_1s_64k_baseline" / "checkpoint.pt",
-    43: Path("experiments") / "B1_1s_64k_baseline_seed43" / "checkpoint.pt",
-    44: Path("experiments") / "B1_1s_64k_baseline_seed44" / "checkpoint.pt",
+    42: Path("experiments") / "data_scale_64k_baseline_seed42" / "checkpoint.pt",
+    43: Path("experiments") / "data_scale_64k_baseline_seed43" / "checkpoint.pt",
+    44: Path("experiments") / "data_scale_64k_baseline_seed44" / "checkpoint.pt",
 }
 
 
@@ -38,7 +38,7 @@ def main():
         print(f"ERROR: {baseline_checkpoint} not found -- run train_b1_64k_baseline.py "
               f"--seed {args.seed} first.")
         sys.exit(1)
-    exp_id = "B1_1s_64k_lambda0.5_5050" if args.seed == 42 else f"B1_1s_64k_lambda0.5_5050_seed{args.seed}"
+    exp_id = "data_scale_64k_holdloss0.5_5050sampling_seed42" if args.seed == 42 else f"data_scale_64k_holdloss0.5_5050sampling_seed42_seed{args.seed}"
     cfg = P1Config(
         exp_id=exp_id, context_s=1.0,
         epochs=40, early_stop_patience=6, lr_schedule="plateau",

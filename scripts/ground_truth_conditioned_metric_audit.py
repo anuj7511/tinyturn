@@ -39,20 +39,20 @@ MIN_N_FOR_FCR = 20
 MODELS = [
     {
         "name": "A0_original",
-        "exp_dir": Path("experiments") / "A0_whisper_tiny_pv2speechend",
-        "vad_path": Path("experiments") / "8f_vad_boundary_diagnostic_v2.json",
+        "exp_dir": Path("experiments") / "whisper_tiny_speech_aligned_contract",
+        "vad_path": Path("experiments") / "vad_boundary_diagnostic_full_val.json",
         "per_clip_key": "per_clip_A0",
     },
     {
-        "name": "A0_boundary_robust",
-        "exp_dir": Path("experiments") / "A0_boundary_robust",
-        "vad_path": Path("experiments") / "8f_vad_boundary_diagnostic_v2__A0_boundary_robust.json",
+        "name": "whisper_tiny_boundary_robust_retrain",
+        "exp_dir": Path("experiments") / "whisper_tiny_boundary_robust_retrain",
+        "vad_path": Path("experiments") / "vad_boundary_diagnostic_full_val_whisper_tiny_boundary_robust.json",
         "per_clip_key": "per_clip_A0",
     },
     {
         "name": "B1_1s",
-        "exp_dir": Path("experiments") / "C1_B1_1s_pv2speechend",
-        "vad_path": Path("experiments") / "8f_vad_boundary_diagnostic_v2.json",
+        "exp_dir": Path("experiments") / "mel_trajectory_1s_speech_aligned_contract",
+        "vad_path": Path("experiments") / "vad_boundary_diagnostic_full_val.json",
         "per_clip_key": "per_clip_B1_1s",
     },
 ]

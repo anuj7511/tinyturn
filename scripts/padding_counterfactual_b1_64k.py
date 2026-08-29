@@ -1,6 +1,6 @@
 """
 Step 10 planning -- padding counterfactual (8e-style) for the 64k B1 checkpoints, never run for any
-B1 model before (the existing `experiments/*/8e_padding_counterfactual.json` files are all A0/
+B1 model before (the existing `experiments/*/padding_counterfactual.json` files are all A0/
 Whisper). Same method as `padding_counterfactual_a0.py`: take val clips short enough to need
 substantial left-padding, build waveform variants that share identical valid (real) audio and differ
 only in what fills the padded region (zero / small noise / large noise / repeat), and compare B1's
@@ -40,7 +40,7 @@ from scripts.vad_boundary_diagnostic_b1_64k import (
 
 CACHE_DIR = Path("data_cache")
 WAV_DIR = CACHE_DIR / "d2_stratified_wavs"
-OUT_PATH = Path("experiments") / "8e_padding_counterfactual_b1_64k.json"
+OUT_PATH = Path("experiments") / "padding_counterfactual_data_scale_64k.json"
 RNG_SEED = 42
 # See module docstring: 1.0 (any left-padding at all), not the A0 precedent's 0.8 -- context_s=1.0
 # makes even that too rare (n=4) to be usable; frac=1.0 gets to n=8, still small.

@@ -51,7 +51,7 @@ is the mel-only variant; the officially-evaluated finalist uses both branches.
 
 ## Official result
 
-The finalist checkpoint (`B1_1s_64k_lambda0.5_5050_seed43`: 1s context, controlled 50:50 real/synthetic
+The finalist checkpoint (`data_scale_64k_holdloss0.5_5050sampling_seed43`: 1s context, controlled 50:50 real/synthetic
 sampling, hold-loss λ=0.5, seed 43) was evaluated exactly once against the official 31,527-clip
 `smart-turn-data-v3.2-test` set, at temperature-scaled threshold 0.612 (T=1.514):
 
@@ -83,7 +83,7 @@ and ranking — see [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md).
 
 The frozen checkpoint, its config/metrics, and an exported ONNX model (plus an int8-quantized
 variant) live under
-[experiments/B1_1s_64k_lambda0.5_5050_seed43/](experiments/B1_1s_64k_lambda0.5_5050_seed43/).
+[experiments/data_scale_64k_holdloss0.5_5050sampling_seed43/](experiments/data_scale_64k_holdloss0.5_5050sampling_seed43/).
 
 ## Repo layout
 

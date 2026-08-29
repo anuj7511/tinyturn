@@ -1,5 +1,5 @@
 """
-Step 10 planning, item 2 -- minimal distillation ablation: B1@1s student, A0_boundary_robust as an
+Step 10 planning, item 2 -- minimal distillation ablation: B1@1s student, whisper_tiny_boundary_robust_retrain as an
 offline teacher (despite its own 8g deployment-robustness FAIL -- the plan uses it anyway, on the
 logic that "not qualified as a deployed teacher under boundary perturbation" and "produces a useful
 soft target for a smaller student" are different questions).

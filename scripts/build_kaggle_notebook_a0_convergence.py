@@ -162,7 +162,7 @@ the original CPU runs were written around, so this is safe here)."""
 ))
 
 cells.append(code_cell(
-'''LONGRUN_4S_DIR = OUT_DIR / "A0_4s_kaggle_longrun"
+'''LONGRUN_4S_DIR = OUT_DIR / "whisper_tiny_4s_earlystopped_longrun"
 LONGRUN_2S_DIR = OUT_DIR / "A0_2s_kaggle_longrun"
 MAX_EPOCHS = 10
 EARLY_STOP_PATIENCE = 3
@@ -170,7 +170,7 @@ BATCH_SIZE = 32
 NUM_WORKERS = 4
 
 cfg_4s = WhisperExperimentConfig(
-    exp_id="A0_4s_kaggle_longrun", context_s=4.0, epochs=MAX_EPOCHS,
+    exp_id="whisper_tiny_4s_earlystopped_longrun", context_s=4.0, epochs=MAX_EPOCHS,
     early_stop_patience=EARLY_STOP_PATIENCE, lr_schedule="plateau",
     batch_size=BATCH_SIZE, lr=1e-5, num_workers=NUM_WORKERS, seed=42,
 )

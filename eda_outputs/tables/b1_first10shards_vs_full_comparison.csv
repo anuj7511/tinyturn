@@ -1,0 +1,5 @@
+column,max_abs_diff_pp,js_divergence
+language,0.26,0.0088
+dataset,0.35,0.0078
+endpoint_bool,0.38,0.0032
+synthetic,0.1,0.0011

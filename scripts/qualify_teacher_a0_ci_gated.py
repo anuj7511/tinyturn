@@ -4,9 +4,9 @@ pass/fail), a frozen direction-specific safety-critical flip bound, and reportin
 direction x real/synthetic x signed Δt.
 
 Inputs:
-  - experiments/A0_whisper_tiny_pv2speechend/8e_padding_counterfactual.json (frozen padding gate;
+  - experiments/whisper_tiny_speech_aligned_contract/padding_counterfactual.json (frozen padding gate;
     NOT the 8e-extended prefix-context diagnostic, which the brief explicitly keeps exploratory-only)
-  - experiments/8f_vad_boundary_diagnostic_v2.json (this revision's full-val-split, n=1600 VAD
+  - experiments/vad_boundary_diagnostic_full_val.json (this revision's full-val-split, n=1600 VAD
     diagnostic -- supersedes the old n=43 pilot this same gate used to run against)
 
 Every gate gets a 95% CI (Wilson for proportions, bootstrap for the padding mean and for FCR
@@ -45,17 +45,17 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from tinyturn.evaluate import fcr_at_fixed_recall
 
-# Optional sys.argv[1]: qualify a different A0 checkpoint dir (e.g. the 8g-remediation
-# boundary-robust retrain) instead of the canonical checkpoint. VAD_PATH follows the same
+# Optional sys.argv[1]: qualify a different A0 checkpoint dir (e.g. the
+# boundary-robust remediation retrain) instead of the canonical checkpoint. VAD_PATH follows the same
 # dir-name-suffixed convention vad_boundary_diagnostic_full_val.py uses when given the same
 # override, so the two scripts' outputs line up automatically. OUT_PATH is always inside A0_DIR, so
 # it can never clobber the canonical checkpoint's own recorded verdict.
-A0_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("experiments") / "A0_whisper_tiny_pv2speechend"
-PADDING_PATH = A0_DIR / "8e_padding_counterfactual.json"
-VAD_PATH = (Path("experiments") / "8f_vad_boundary_diagnostic_v2.json" if len(sys.argv) <= 1
-            else Path("experiments") / f"8f_vad_boundary_diagnostic_v2__{A0_DIR.name}.json")
+A0_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("experiments") / "whisper_tiny_speech_aligned_contract"
+PADDING_PATH = A0_DIR / "padding_counterfactual.json"
+VAD_PATH = (Path("experiments") / "vad_boundary_diagnostic_full_val.json" if len(sys.argv) <= 1
+            else Path("experiments") / f"vad_boundary_diagnostic_full_val_{A0_DIR.name}.json")
 TRANSCRIPTS_PATH = Path("data_cache") / "d2_stratified_transcripts.parquet"
-OUT_PATH = A0_DIR / "8g_qualification_v2.json"
+OUT_PATH = A0_DIR / "qualification_ci_gated.json"
 
 N_BOOT, RNG_SEED, Z_95 = 200, 42, 1.959963984540054
 SAFETY_CRITICAL_FLIP_RATE_BOUND = 0.02  # frozen, tighter than the 5% aggregate VAD flip bound

@@ -5,11 +5,11 @@ B0/B1/A0 shared the same epoch budget/schedule inherited from A0's protocol (fix
 fixed LR, no early stopping) -- there's no reason a randomly-initialized model (B1) converges at the
 same rate as a pretrained one (A0). This:
 
-1. Reports best-epoch vs. final-epoch for the existing C1_B1_1s_pv2speechend run (5 fixed epochs,
+1. Reports best-epoch vs. final-epoch for the existing mel_trajectory_1s_speech_aligned_contract run (5 fixed epochs,
    Phase-2 8d's retrain) and states plainly whether val AUC was still rising at the final epoch.
 2. Runs ONE longer B1@1s training with early stopping and its own LR schedule (ReduceLROnPlateau --
    distinct from A0's fixed-lr protocol), writing to a NEW directory so the qualifying
-   C1_B1_1s_pv2speechend checkpoint is untouched.
+   mel_trajectory_1s_speech_aligned_contract checkpoint is untouched.
 3. Compares the longer run's best val AUC against the original fixed-epoch run's.
 
 Usage:
@@ -22,8 +22,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from tinyturn.train import ExperimentConfig, train_experiment
 
-ORIGINAL_DIR = Path("experiments") / "C1_B1_1s_pv2speechend"
-LONGRUN_DIR = Path("experiments") / "B1_1s_8h_longrun"
+ORIGINAL_DIR = Path("experiments") / "mel_trajectory_1s_speech_aligned_contract"
+LONGRUN_DIR = Path("experiments") / "mel_trajectory_1s_earlystopped_longrun"
 
 
 def analyze_existing_run():
@@ -35,7 +35,7 @@ def analyze_existing_run():
     best_epoch = best_h["epoch"]
     best_val_auc = best_h["val_auc"]
     final_epoch = history[-1]["epoch"]
-    print("=== Existing C1_B1_1s_pv2speechend run (fixed 5-epoch protocol inherited from A0) ===")
+    print("=== Existing mel_trajectory_1s_speech_aligned_contract run (fixed 5-epoch protocol inherited from A0) ===")
     for h in history:
         marker = "  <- best" if h["epoch"] == best_epoch else ""
         print(f"  epoch {h['epoch']}: val_auc={h['val_auc']:.4f} loss={h['train_loss']:.4f}{marker}")
@@ -51,7 +51,7 @@ def analyze_existing_run():
 
 def run_longer_b1(seed: int = 42):
     cfg = ExperimentConfig(
-        exp_id="B1_1s_8h_longrun", context_s=1.0, use_trajectory=True, use_f0=False,
+        exp_id="mel_trajectory_1s_earlystopped_longrun", context_s=1.0, use_trajectory=True, use_f0=False,
         epochs=40, early_stop_patience=6, lr_schedule="plateau",
         batch_size=64, num_workers=2, seed=seed,
     )
@@ -86,9 +86,9 @@ def main():
                                   "best_val_auc": long_best, "history": longrun_report["history"]},
         "delta_pp": round(delta_pp, 3),
     }
-    with open(Path("experiments") / "8h_b1_convergence_check.json", "w") as f:
+    with open(Path("experiments") / "convergence_check_mel_trajectory.json", "w") as f:
         json.dump(summary, f, indent=2, default=str)
-    print("\nsaved experiments/8h_b1_convergence_check.json")
+    print("\nsaved experiments/convergence_check_mel_trajectory.json")
 
 
 if __name__ == "__main__":

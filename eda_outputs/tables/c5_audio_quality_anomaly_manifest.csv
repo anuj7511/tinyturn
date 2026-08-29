@@ -1,0 +1,7 @@
+id,duration_s,dc_offset,peak_amplitude,rms,clipping_frac,reasons
+00c85b74-cb38-4222-b043-8a525eb0a0e9,0.83,-0.0,1.0,0.11099,8e-05,duration_outlier
+01194aa4-1055-44f9-b935-d3173ebb1ef0,0.92,-0.0002,0.244,0.0374,0.0,duration_outlier
+016dfe8e-5a81-4b51-a3d8-df97fd13ec66,0.36,0.0005,0.6141,0.20336,0.0,duration_outlier
+01c83793-35dc-4026-98a7-37e625d9b1d7,0.76,-0.0002,0.3943,0.08246,0.0,duration_outlier
+01cce49f-eac7-4067-8c97-ca137f3bf1eb,10.48,0.0007,1.0,0.13851,0.00213,clipping
+02559325-c164-4e6c-8e59-9e5e565944d7,0.76,-0.0011,0.5982,0.09776,0.0,duration_outlier

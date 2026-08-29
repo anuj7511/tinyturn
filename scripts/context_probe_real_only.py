@@ -34,7 +34,7 @@ from d6_context_probe import segment_runs, slope_in_window, bootstrap_auc_ci  # 
 RNG_SEED = 42
 CACHE_DIR = Path("data_cache")
 WAV_DIR = CACHE_DIR / "d2_stratified_wavs"
-OUT_DIR = Path("experiments/C0_context_probe")
+OUT_DIR = Path("experiments/context_probe_handcrafted")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 CONTEXT_LENGTHS_S = [0.5, 1, 2, 4]
@@ -197,7 +197,7 @@ def main():
     for ctx_s in CONTEXT_LENGTHS_S:
         for slice_name, df in slices.items():
             results.append(run_slice(slice_name, df, ctx_s))
-        pd.DataFrame(results).to_csv(OUT_DIR / "c0_context_probe_results.csv", index=False)
+        pd.DataFrame(results).to_csv(OUT_DIR / "context_probe_results.csv", index=False)
 
     out = pd.DataFrame(results)
     print("\n" + out.to_string(index=False))
@@ -217,7 +217,7 @@ def main():
                      "reruns the sweep on the trained model and makes the final decision, matching "
                      "D6-vs-E1's relationship in the EDA."),
         }, f, indent=2)
-    print(f"saved {OUT_DIR / 'config.json'} and {OUT_DIR / 'c0_context_probe_results.csv'}")
+    print(f"saved {OUT_DIR / 'config.json'} and {OUT_DIR / 'context_probe_results.csv'}")
 
 
 if __name__ == "__main__":

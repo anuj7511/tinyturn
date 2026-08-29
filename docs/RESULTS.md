@@ -1,17 +1,19 @@
-# TinyTurn-Fusion Phase 3 — Results: Step 10 planning (metric audit, distillation, ranking)
+# TinyTurn — Final Results: Finalist Selection and Official Test Evaluation
 
-*Follows `PHASE3_RESULTS_8g_remediation.md`, which left A0 disqualified as a teacher under 8g's
-prediction-conditioned flip-rate gate. This note covers the six-item Step-10 planning pass run
-against that result: a mandatory metric audit, a distillation ablation, a pairwise-ranking
-experiment, finalist selection, and a partial 3-seed confirmation. Bottom line: **the metric audit
-meaningfully softens the "A0 is disqualified" picture; distillation is dropped; the ranking
-experiment is a real, kept result but doesn't unseat either finalist; the finalists remain
-`λ=0.5 all` and `λ=0.5 50:50`.***
+*Continues from [docs/EXPERIMENTS.md](EXPERIMENTS.md) Section 4, which left A0 disqualified as a
+distillation teacher under its original prediction-conditioned flip-rate gate. This document covers
+everything from there to the final shipped checkpoint: a corrected metric audit, a distillation
+ablation, a pairwise-ranking experiment, finalist selection, a 3-seed confirmation, temperature
+scaling, and the official test evaluation. Bottom line: **the corrected metric audit meaningfully
+softens the "A0 is disqualified" picture; distillation is dropped; the ranking experiment is a
+real, kept result but doesn't unseat either finalist; the finalists remain the hold-loss objective
+at λ=0.5 with proportional real/synthetic sampling, and λ=0.5 with 50:50 sampling.***
 
-## 1. Metric audit: 8g's flip-rate gate was inflated
+## 1. Metric audit: the original teacher-qualification gate was inflated
 
-8g's "safety-critical flip rate" (`qualify_teacher_a0_ci_gated.py::direction_specific_gates`)
-conditions only on the **canonical prediction** (canonical says incomplete → alt flips to
+The original teacher-qualification gate's "safety-critical flip rate"
+(`qualify_teacher_a0_ci_gated.py::direction_specific_gates`) conditions only on the **canonical
+prediction** (canonical says incomplete → alt flips to
 complete). It never checks whether canonical was actually right — a flip counted there can be a
 *correction* (truth is really complete, canonical was wrong, the alt boundary fixed it), not a
 safety problem.
@@ -24,7 +26,7 @@ introduced false completion: truth=incomplete, canonical=continue (correct), alt
 introduced delay:            truth=complete,   canonical=complete (correct), alternative=continue (now wrong)
 ```
 
-| | A0_original | A0_boundary_robust | 2% bound |
+| | A0_original | whisper_tiny_boundary_robust_retrain | 2% bound |
 |---|---|---|---|
 | Introduced false completion (alt_threshold) | 3.21% [2.17, 4.74] — decisive-fail | **1.06%** [0.54, 2.08] — inconclusive | ≤2% |
 | Introduced false completion (silero) | 3.61% [2.50, 5.21] — decisive-fail | **2.13%** [1.31, 3.42] — inconclusive | ≤2% |
@@ -33,28 +35,28 @@ introduced delay:            truth=complete,   canonical=complete (correct), alt
 
 The old gate reported boundary-robust A0 at 8.0–10.5%, "4-6x over the 2% bound" — decisively failing.
 Conditioned on ground truth, it is **statistically indistinguishable from the bound** (inconclusive,
-not decisive-fail). This doesn't reverse 8g's FAIL verdict (inconclusive still blocks per the
-brief's own rule), but it means A0 is much closer to viable than `PHASE3_RESULTS_8g_remediation.md`
-suggested. Also reported per-boundary FCR-at-recall95 (canonical vs. alt vs. Silero) standalone —
-no absolute degradation from either alternative boundary on A0_boundary_robust in any slice.
+not decisive-fail). This doesn't reverse the teacher-qualification FAIL verdict (inconclusive still
+blocks, per this project's own qualification rule), but it means A0 is much closer to viable than
+the original flip-rate gate suggested. Also reported per-boundary FCR-at-recall95 (canonical vs. alt vs. Silero) standalone —
+no absolute degradation from either alternative boundary on whisper_tiny_boundary_robust_retrain in any slice.
 
 Artifact: `experiments/metric_audit_ground_truth_conditioned.json`.
 
 ## 2. Distillation ablation: dropped
 
-Two runs, B1@1s student, A0_boundary_robust as an offline teacher (despite its own gate FAIL),
-fixed recipe per the plan (T=2, α=0.5, teacher loss on final clips only, hard labels on internal
+Two runs, B1@1s student, whisper_tiny_boundary_robust_retrain as an offline teacher (despite its own gate FAIL),
+fixed recipe (T=2, α=0.5, teacher loss on final clips only, hard labels on internal
 holds, student boundary augmentation enabled). Teacher logits precomputed once over all 12,797 D2
 train clips (`data_cache/teacher_logits_a0_boundary_robust_train.parquet`).
 
 | | Overall AUC | Real AUC | Δ overall | Δ real |
 |---|---|---|---|---|
-| B1 baseline (`C1_B1_1s_pv2speechend`) | 0.8279 | 0.7402 | — | — |
+| B1 baseline (`mel_trajectory_1s_speech_aligned_contract`) | 0.8279 | 0.7402 | — | — |
 | D1 (canonical-boundary teacher) | 0.8277 | 0.7168 | −0.02pp | **−2.34pp** |
 | D2 (mean-of-3 teacher) | 0.8269 | 0.7186 | −0.10pp | **−2.16pp** |
 
-Neither run clears the plan's own bar (+0.5pp overall AUC *or* +1pp real AUC) — both move backward
-on both axes. **Dropped**, per the plan's explicit rule. No need to run the ground-truth-conditioned
+Neither run clears this project's own keep bar (+0.5pp overall AUC *or* +1pp real AUC) — both move
+backward on both axes. **Dropped**. No need to run the ground-truth-conditioned
 VAD audit on these checkpoints; the AUC gate alone disqualifies both.
 
 ### 2b. Correction: D1/D2 weren't an isolated test of distillation
@@ -78,13 +80,13 @@ augmentation *recovers* roughly two-thirds of the loss (D1/D2 vs. D0: +5.0 to +5
 distillation signal was helping, substantially — it just wasn't enough to fully cancel out boundary
 augmentation's own cost and come out ahead of the plain, unaugmented baseline.
 
-The shipping decision doesn't change: per the plan's own rule ("even if distillation improves over
-D0, do not ship it unless it also beats the ordinary B1 baseline"), D1/D2 still trail the untouched
+The shipping decision doesn't change: per this project's own rule ("even if distillation improves
+over D0, do not ship it unless it also beats the ordinary B1 baseline"), D1/D2 still trail the untouched
 baseline on real AUC (−2.16 to −2.34pp), so **distillation stays dropped for Step 10**. What changes
 is the *scientific* conclusion: this is not "distillation failed" — it's "boundary augmentation has
 a real cost that distillation partially, but not fully, offsets." Worth remembering if boundary
 augmentation is ever revisited for B1 independent of distillation (it currently only exists in this
-project as part of A0's 8g remediation retrain and these D0/D1/D2 controls, never evaluated as a
+project as part of A0's boundary-robust remediation retrain and these D0/D1/D2 controls, never evaluated as a
 plain B1 training-time addition on its own without either teacher logits or hold-loss terms).
 
 New code: `tinyturn/train_distill.py`, `scripts/precompute_teacher_logits.py`,
@@ -116,8 +118,9 @@ lr_schedule=plateau — see Section 5 for why this took a retrain):
 | λ=0.5 all | 0.8312 ± 0.004 | 0.6998 ± 0.003 (−5.47pp) | 0.110 ± 0.010 | 0.110 ± 0.007 |
 | λ=0.5 50:50 | 0.8258 ± 0.006 | 0.6962 ± 0.013 (−5.83pp) | 0.119 ± 0.011 | **0.039 ± 0.005** |
 
-Ranking clears its own keep bar decisively (plan required ≥5pp hold-FCR gain over baseline at ≤2pp
-real-AUC cost; single-seed result was −15.8pp/-16.9pp hold-FCR at **+0.31pp** real AUC). Across 3
+Ranking clears its own keep bar decisively (this project's rule required ≥5pp hold-FCR gain over
+baseline at ≤2pp real-AUC cost; single-seed result was −15.8pp/-16.9pp hold-FCR at **+0.31pp** real
+AUC). Across 3
 seeds it has by far the smallest real-AUC cost of the three engineered arms, but its hold-FCR is
 worse than both λ=0.5 variants (13.8% all vs. 11.0–11.9%; real hold-FCR ties λ=0.5-all but trails
 50:50's 3.9% by a wide margin). **A genuine Pareto trade-off, not dominance in either direction** —
@@ -125,7 +128,7 @@ the differences are all multi-point, not sub-1pp noise.
 
 ## 4. Finalist selection: unchanged
 
-Per the plan's rule ("replace one only if distillation or ranking clearly dominates"): distillation
+Per this project's own rule ("replace one only if distillation or ranking clearly dominates"): distillation
 failed its own gate outright; ranking is real but doesn't dominate either λ=0.5 arm. **Finalists
 remain `λ=0.5 all` and `λ=0.5 50:50`.** Ranking stays documented as a viable alternative (smallest
 real-AUC cost of any hold-aware objective tried) if the accuracy/hold-FCR trade-off is ever
@@ -134,12 +137,14 @@ revisited.
 ## 5. Three-seed confirmation: partial
 
 A protocol mismatch was caught while assembling this table: the existing seed-42 checkpoints for
-`λ=0.5 all`/`λ=0.5 50:50` (`step9_results_updated/P1ab_lambda0.5_*`) were trained under the **old
+`λ=0.5 all`/`λ=0.5 50:50` (`experiments/pause_event_sampling_comparison/pause_events_holdloss0.5_proportional*`
+and `.../pause_events_holdloss0.5_5050sampling*`) were trained under the **old
 fixed-5-epoch protocol**, while the same arms at seeds 43/44 (and the baseline at every seed) use
-the 8h-validated **plateau/early-stopping protocol** (epochs≤40, patience=6). The plan's own
+the validated **plateau/early-stopping protocol** (epochs≤40, patience=6). This project's own
 reuse rule ("existing seed-42 runs can be reused if their manifests and code hashes match") caught
 exactly this — they didn't match, so seed 42 for both λ=0.5 arms was retrained under the matching
-protocol (`experiments/P1ab_lambda0.5_{all,5050}_seed42_plateau`), and ranking was run fresh at all
+protocol (`experiments/pause_event_sampling_comparison/pause_events_holdloss0.5_proportional_seed42`
+and `.../pause_events_holdloss0.5_5050sampling_seed42`), and ranking was run fresh at all
 three seeds under the same protocol (it had only ever run under the old one). The table in Section 3
 is fully protocol-consistent across all four arms and all three seeds.
 
@@ -154,7 +159,7 @@ already multiple points wide, not a close call these metrics would flip.
 
 Section 3's hold-FCR numbers were computed at each arm's own independently-calibrated threshold
 (target FCR=0.05 on final clips) — not comparable across arms with different calibration curves,
-and not even the same threshold-selection method the plan's own keep/promotion rules use (matched
+and not even the same threshold-selection method this project's own keep/promotion rules use (matched
 complete-turn recall). Own-threshold hold-FCR made ranking (real AUC 0.7345) and `λ=0.5 all` (real
 AUC 0.6998) look nearly tied on real-hold FCR (11.3% vs. 11.0%) — a much closer call than the
 headline real-AUC gap suggested, worth checking properly rather than trusting.
@@ -178,7 +183,7 @@ checkpoints (4 arms × 3 seeds) — inference only, no retraining.
 (3-seed means; achieved val recall at these calib-selected thresholds is 0.91/0.96, close to the
 0.90/0.95 targets as expected.)
 
-**The matched-recall hypothesis in the correction request does not hold up: ranking's real-hold FCR
+**The matched-recall hypothesis does not hold up: ranking's real-hold FCR
 is *worse* than `λ=0.5 all`'s at every matched recall point (70.6% vs. 67.4% @90; 86.0% vs. 81.2%
 @95), not a near-tie.** The apparent tie under own-threshold calibration (11.3% vs. 11.0%) was an
 artifact of each arm landing at a different, arm-specific point on its own hold-FCR-vs-recall curve
@@ -194,20 +199,20 @@ the finalists, and this new evidence is a point *against* substituting ranking i
 `experiments/matched_recall_audit_calib_then_val.json`; plot (seed 42):
 `experiments/matched_recall_audit_seed42.png`.
 
-## 6. Step 6 (32k scaling point): done — decisive win for the baseline
+## 6. Data scaling, 32k tier: decisive win for the baseline
 
-Per the correction request: no ASR transcription needed (plain B1/pause/ranking training only needs
-waveform, endpoint label, metadata, speech boundaries, pause events, log-mel/trajectory features —
-`endfiller` ground truth already ships natively on synthetic rows in the raw HF dataset, confirmed
-real rows have it null 100% of the time, same convention D2 already relies on). This also removed
-the biggest cost/time driver (and the OpenAI API spend) from the original estimate below.
+No ASR transcription needed (plain B1/pause/ranking training only needs waveform, endpoint label,
+metadata, speech boundaries, pause events, log-mel/trajectory features — `endfiller` ground truth
+already ships natively on synthetic rows in the raw HF dataset, confirmed real rows have it null
+100% of the time, same convention the 15,998-clip working set already relies on). This also removed
+the biggest cost/time driver (and the OpenAI API spend) from the original scaling estimate.
 
-**Whole-shard fetching** (8i's re-scoping): `pipecat-ai/smart-turn-data-v3.2-train` is stored as 83
+**Whole-shard fetching**: `pipecat-ai/smart-turn-data-v3.2-train` is stored as 83
 individually-downloadable parquet shard files (confirmed via `HfApi.list_repo_files`), ~3265 rows /
-~500MB each — direct shard access works exactly as 8i hoped, no need to stream the full 270,933-row
+~500MB each — direct shard access works, no need to stream the full 270,933-row
 dataset the way the original 16k build did (3.6 hours). Five shards (10/20/30/40/50) were checked
-individually (metadata columns only, no audio) against the population-level composition in
-`eda_complete_results.md` Section B2 before committing — all five landed within ~1-2pp of the full
+individually (metadata columns only, no audio) against the population-level composition reported in
+[docs/EDA.md](EDA.md) Section 1 before committing — all five landed within ~1-2pp of the full
 270,946-row population on every column checked (language eng/spa, synthetic rate, dataset chirp3_1
 share). Decode + DSP feature extraction (no ASR) for the resulting ~15,277 new clips initially ran
 on 8 threads (~1.9 clips/s, `librosa.pyin`-bound and thread/GIL-limited); switched to a
@@ -215,7 +220,7 @@ on 8 threads (~1.9 clips/s, `librosa.pyin`-bound and thread/GIL-limited); switch
 here (no GPU-accelerated code path for this DSP pipeline; the bottleneck is pure CPU) — but true
 multiprocessing gave a **~4.3x speedup** (~7.9 clips/s), finishing all 5 shards in 23 minutes.
 Appends only: the existing 15,998 D2 rows and their split assignments are untouched; every new row
-is `split="train"` only, so val/calib stay fixed across tiers exactly as the brief requires.
+is `split="train"` only, so val/calib stay fixed across tiers exactly as the data-scaling protocol requires.
 (`scripts/build_data_scale_tier.py`.)
 
 Trained B1 baseline and the user-selected obj(`λ=0.5 50:50`, chosen for having the best real-hold-FCR
@@ -239,8 +244,8 @@ the 32k baseline's 56.51% at that same threshold). The accuracy/hold-safety tens
 
 ### 6b. 64k escalation: baseline gain confirmed unusually large; objective trained there too
 
-Per the user's explicit instruction (the 32k gain was judged "unusually large" against the brief's
-own 64k-escalation trigger): ran a 64k B1 baseline, seed 42 only, same protocol, then trained the
+Per the user's explicit instruction (the 32k gain was judged "unusually large" against this
+project's own 64k-escalation trigger): ran a 64k B1 baseline, seed 42 only, same protocol, then trained the
 chosen final objective (`λ=0.5 50:50`) at 64k since the baseline cleared the gate.
 
 **Data build**: 11 more whole shards (5/15/25/35/45/55/60/65/70/75/80), same representativeness
@@ -272,12 +277,12 @@ same threshold). The accuracy/hold-safety gap vs. baseline is real but **not mon
 with scale** as Section 6 first suggested: −3.29pp (16k) → −5.97pp (32k) → −4.28pp (64k). Scale
 helps both arms; it doesn't cleanly resolve or worsen the trade-off in one consistent direction.
 
-Per the brief's rule ("do not run 64k/128k before submission unless the 32k gain is unusually
+Per this project's own rule ("do not run 64k/128k before submission unless the 32k gain is unusually
 large"), 64k was the explicit exception case, run on direct user instruction — **128k was not run
 and is not implied by this result**; that would need its own explicit decision.
 
-Artifacts: `experiments/B1_1s_32k_baseline/`, `experiments/B1_1s_32k_lambda0.5_5050/`,
-`experiments/B1_1s_64k_baseline/`, `experiments/B1_1s_64k_lambda0.5_5050/`,
+Artifacts: `experiments/data_scale_32k_baseline/`, `experiments/data_scale_32k_holdloss0.5_5050sampling/`,
+`experiments/data_scale_64k_baseline_seed42/`, `experiments/data_scale_64k_holdloss0.5_5050sampling_seed42/`,
 `scripts/build_data_scale_tier.py` (generalized to accept `--shards` for any tier),
 `scripts/train_b1_32k_baseline.py`, `scripts/train_b1_32k_lambda0.5_5050.py`,
 `scripts/train_b1_64k_baseline.py`, `scripts/train_b1_64k_lambda0.5_5050.py`.
@@ -291,7 +296,7 @@ correction). `matched_recall_audit_64k.py` (threshold selected on **calib**'s re
 evaluated on **val** only — never the same split) was run first against seed 42 alone, then against
 all three seeds once the confirmation runs below finished.
 
-Trained `B1_1s_64k_baseline_seed{43,44}` and `B1_1s_64k_lambda0.5_5050_seed{43,44}` (4 runs) via
+Trained `data_scale_64k_baseline_seed{43,44}` and `data_scale_64k_holdloss0.5_5050sampling_seed{43,44}` (4 runs) via
 generalized `--seed` flags on `train_b1_64k_baseline.py` / `train_b1_64k_lambda0.5_5050.py` (the
 lambda script picks its same-seed baseline checkpoint via `SEED_BASELINE_CHECKPOINTS`). Ran
 sequentially (CPU-only, 16GB RAM — running two `num_workers=6` processes concurrently risks the same
@@ -314,8 +319,8 @@ wall-clock total. All 4 converged normally (early-stopped, patience=6, no crashe
 Overall/real AUC gap (baseline mean real AUC 0.8106 vs. λ=0.5 50:50's 0.7667, a **4.4pp real-AUC
 cost**) matches the seed-42-only picture from Section 6b — not a seed-42 artifact. The λ model's own
 threshold is much lower and far more seed-variable (0.52–0.69) than the baseline's (0.81–0.88),
-and its Brier/ECE are consistently worse (own-threshold calibration is *not* what temperature
-scaling in item 6 will fix directly — ECE here is computed at raw sigmoid outputs, before any
+and its Brier/ECE are consistently worse (own-threshold calibration is *not* what the temperature
+scaling below will fix directly — ECE here is computed at raw sigmoid outputs, before any
 temperature adjustment).
 
 **3-seed matched-recall (calib→val) hold-FCR, mean±std:**
@@ -336,14 +341,15 @@ alone; on 3 seeds it's marginally worse, within noise). Net: the selection decis
 `λ=0.5 50:50` for hold safety) is now on solid 3-seed footing, at a real, quantified cost to overall
 accuracy and calibration quality that must be disclosed alongside it.
 
-Artifacts: `experiments/B1_1s_64k_baseline_seed{43,44}/`,
-`experiments/B1_1s_64k_lambda0.5_5050_seed{43,44}/`, `experiments/matched_recall_audit_64k.json`.
+Artifacts: `experiments/data_scale_64k_baseline_seed{43,44}/`,
+`experiments/data_scale_64k_holdloss0.5_5050sampling_seed{43,44}/`, `experiments/matched_recall_audit_64k.json`.
 
-Ground-truth-conditioned VAD-boundary errors (8f-style) for all 6 64k checkpoints are done via the
+Ground-truth-conditioned VAD-boundary errors for all 6 64k checkpoints are done via the
 new `scripts/vad_boundary_diagnostic_b1_64k.py` (never run for B1 at this data scale
-before) — combines 8f-v2's boundary computation (cached once at
-`experiments/8f_val_boundaries_cache.parquet` for reuse across checkpoints) with Section 1's
-ground-truth-conditioned introduced-error metrics rather than the superseded flip-rate gate.
+before) — reuses the full-val VAD-boundary rerun's boundary computation (cached once as a local
+intermediate file, not itself part of this published subset, so reuse across checkpoints is not
+independently re-derivable here) with Section 1's ground-truth-conditioned introduced-error metrics
+rather than the superseded flip-rate gate.
 
 **3-seed mean±std, real-audio-only slice (n≈130–137 per seed for false-completion; n=6–52 per seed
 for delay — see caveat below):**
@@ -369,12 +375,12 @@ above) translates into a lower (better) FCR at matched recall on the endpoint ta
 mirror image of the hold-FCR result where `λ=0.5 50:50` wins. This is the accuracy/hold-safety
 trade-off restated in a third, independent metric — same story, not a new finding.
 
-Artifacts: `experiments/8f_vad_boundary_diagnostic_b1_64k.json`,
-`experiments/8f_val_boundaries_cache.parquet`,
-`scripts/vad_boundary_diagnostic_b1_64k.py`.
+Artifacts: `experiments/vad_boundary_diagnostic_data_scale_64k.json`,
+`scripts/vad_boundary_diagnostic_b1_64k.py` (its cached intermediate boundary file is not part of
+this published subset).
 
-**Padding counterfactual (8e-style)**, via the new `scripts/padding_counterfactual_b1_64k.py`
-— never run for any B1 model before (the existing `8e_padding_counterfactual.json` files are all
+**Padding counterfactual**, via the new `scripts/padding_counterfactual_b1_64k.py`
+— never run for any B1 model before (the existing `padding_counterfactual.json` files are all
 A0/Whisper). Genuine data-characteristic finding, not a script bug: at `context_s=1.0`, padding is a
 far rarer scenario than at A0's `context_s=4.0` — val `last_active_t` has median 6.73s, and even the
 loosest possible cut (ANY left-padding at all, i.e. `speech_end_s < 1.0s`) only reaches **n=8 of
@@ -400,17 +406,17 @@ on this tiny sample, so there is no evidence of an actual behavioral problem, ju
 uncertainty for baseline seed44 specifically that a larger padding-sensitive sample (not available
 in this val split) would be needed to resolve.
 
-Artifacts: `experiments/8e_padding_counterfactual_b1_64k.json`,
+Artifacts: `experiments/padding_counterfactual_data_scale_64k.json`,
 `scripts/padding_counterfactual_b1_64k.py`.
 
-With this, the "padding/VAD/real/implicit/hold" evaluation suite (item 7 of the user's remaining
-sequence) is now complete for the 64k checkpoints: VAD-boundary (above), padding (above), real/
-implicit slices (already in each checkpoint's own `metrics.json`, reported in the AUC/calibration
-table earlier in this section), and hold-FCR (Section 6c's matched-recall audit). Still outstanding:
-explicit final temperature-scaling/threshold calibration on calib only (item 6), and freeze →
-official-test evaluation → export (item 8).
+With this, the "padding/VAD/real/implicit/hold" evaluation suite is now complete for the 64k
+checkpoints: VAD-boundary (above), padding (above), real/implicit slices (already in each
+checkpoint's own `metrics.json`, reported in the AUC/calibration table earlier in this section),
+and hold-FCR (Section 6c's matched-recall audit). Still outstanding: explicit final
+temperature-scaling/threshold calibration on calib only (next section), and freeze →
+official-test evaluation → export (final section).
 
-## 6f. Temperature scaling + final threshold on calibration only (done, item 6)
+## 6f. Temperature scaling + final threshold on calibration only
 
 Distinct from each run's own per-checkpoint `calibrate_threshold` (already picks a threshold on
 calib for target FCR≤0.05, but off *raw*, uncalibrated sigmoid outputs) — this fits a single scalar
@@ -444,21 +450,21 @@ seed improves.
 
 Artifacts: `experiments/temperature_scaling_64k.json`, `scripts/calibrate_temperature_scaling_64k.py`.
 
-Item 6 done. Only item 8 remains: freeze one checkpoint, evaluate once against the official
-31,527-row HF test set, export, and submit. **This requires an explicit decision this project hasn't
-made yet: which single checkpoint (arm + seed) to freeze** — the per-finalist convention means the
-official test set gets touched exactly once, so this is not a call to make casually. Flagging for
-the user rather than picking unilaterally.
+Only one step remains: freeze one checkpoint, evaluate once against the official 31,527-row HF test
+set, export, and submit. **This requires an explicit decision this project hadn't made yet: which
+single checkpoint (arm + seed) to freeze** — the per-finalist convention means the official test set
+gets touched exactly once, so this is not a call to make casually. Flagged for the user rather than
+picked unilaterally.
 
-## 6g. Freeze + official test evaluation + export (done, item 8 — FINAL)
+## 6g. Freeze, official test evaluation, and export (FINAL)
 
-**Frozen per explicit user decision**: `B1_1s_64k_lambda0.5_5050_seed43`, temperature `T=1.5142`
+**Frozen per explicit user decision**: `data_scale_64k_holdloss0.5_5050sampling_seed43`, temperature `T=1.5142`
 (user said 1.514; stored value used verbatim), calibrated probability threshold `0.612`,
-preprocessing `pv2-speechend`, `context_s=1.0`. Checkpoint sha256:
+speech-aligned input contract, `context_s=1.0`. Checkpoint sha256:
 `ddaf7a8ea95b6675022920b68b95e7a1f8202ab403c3e7e11e08dc5f0892694f`. Full manifest — architecture
 config, every metric computed against this checkpoint this session (training full_report,
 matched-recall audit, VAD-boundary diagnostic, padding counterfactual, temperature scaling detail) —
-recorded in `experiments/B1_1s_64k_lambda0.5_5050_seed43/FROZEN_MANIFEST.json` **before** the test
+recorded in `experiments/data_scale_64k_holdloss0.5_5050sampling_seed43/FROZEN_MANIFEST.json` **before** the test
 set was touched. The 64k baseline is kept only as the accuracy ablation reference (Section 6c);
 per the user's instruction it was **not** evaluated on the official test.
 
@@ -515,24 +521,26 @@ small, expected drift (0.008 logit units). **Counterintuitive but measured, not 
 likely dynamic-quantization dequant overhead dominating for a model this tiny (7,045,264 MACs,
 109,979 parameters); reported as-measured rather than assuming smaller means faster.
 
-Artifacts: `experiments/B1_1s_64k_lambda0.5_5050_seed43/FROZEN_MANIFEST.json`,
+Artifacts: `experiments/data_scale_64k_holdloss0.5_5050sampling_seed43/FROZEN_MANIFEST.json`,
 `data_cache/official_test_features.npz`, `data_cache/official_test_metadata.parquet`,
 `experiments/official_test_per_clip_results.parquet`, `experiments/official_test_report.json`,
-`experiments/B1_1s_64k_lambda0.5_5050_seed43/{model.onnx,model_int8.onnx,export_manifest.json}`,
+`experiments/data_scale_64k_holdloss0.5_5050sampling_seed43/{model.onnx,model_int8.onnx,export_manifest.json}`,
 `scripts/run_official_test_evaluation.py`, `scripts/export_frozen_checkpoint_onnx.py`.
 
-**Item 8 done. This closes the user's entire 8-step remaining sequence. No further model changes
-are made per the user's explicit instruction — the checkpoint, temperature, and threshold above are
-final.**
+**This closes out the project. No further model changes are made per the user's explicit
+instruction — the checkpoint, temperature, and threshold above are final.**
 
 ## 7. Artifacts
 
 - `experiments/metric_audit_ground_truth_conditioned.json` — Section 1.
 - `data_cache/teacher_logits_a0_boundary_robust_train.parquet` — Section 2.
-- `experiments/B1_1s_distill_{d0,d1,d2}/` — Sections 2 and 2b (dropped; D0 is the isolation control).
-- `experiments/B1_1s_ranking{,_seed43_plateau,_seed44_plateau}/`,
-  `experiments/B1_1s_ranking_seed42_plateau/` — Section 3.
-- `experiments/P1ab_lambda0.5_{all,5050}_seed42_plateau/` — Section 5 protocol-matched retrains.
+- `experiments/distillation_isolation_control/`, `experiments/distillation_canonical_boundary_teacher/`,
+  `experiments/distillation_mean3boundary_teacher/` — Sections 2 and 2b (dropped; the isolation
+  control is the D0 control run).
+- `experiments/pairwise_ranking_singleseed/`, `experiments/pairwise_ranking_seed42/`,
+  `experiments/pairwise_ranking_seed43/`, `experiments/pairwise_ranking_seed44/` — Section 3.
+- `experiments/pause_event_sampling_comparison/pause_events_holdloss0.5_proportional_seed42/`,
+  `.../pause_events_holdloss0.5_5050sampling_seed42/` — Section 5 protocol-matched retrains.
 - `experiments/matched_recall_audit_calib_then_val.json`,
   `experiments/matched_recall_audit_seed42.png` — Section 5b.
 - New code: `scripts/ground_truth_conditioned_metric_audit.py`, `scripts/precompute_teacher_logits.py`,
@@ -542,11 +550,13 @@ final.**
   `tinyturn/dataset.py` and `tinyturn/pause_events.py` gained `augment_boundaries`/`teacher_logit`
   support.
 
-## 8. Open items from the latest correction request
+## 8. Summary
 
-- **Distillation isolation control (D0)**: done — see Section 2b. Confirms the shipping decision
+- **Distillation isolation control (D0)**: see Section 2b. Confirms the shipping decision
   (distillation still dropped) but corrects the scientific attribution (boundary augmentation, not
   the teacher signal, is the source of the real-AUC cost; distillation partially offsets it).
-- **32k scaling, without ASR transcription**: done — see Section 6. Decisive gain for the baseline
-  (+5.52pp real AUC); the hold-aware objective's real-AUC cost persists and widens in relative terms
-  at 32k. Whether to escalate to 64k is an open, explicitly user-facing decision.
+- **Data scaling**: 32k was a decisive gain for the baseline (+5.52pp real AUC; the hold-aware
+  objective's real-AUC cost persists and widens in relative terms at 32k, Section 6); 64k was run as
+  the explicit large-gain exception and confirmed the same pattern at 3 seeds (Sections 6b–6c).
+- **Everything above this point is final** — see Section 6g for the frozen checkpoint and the single
+  official test-set evaluation.

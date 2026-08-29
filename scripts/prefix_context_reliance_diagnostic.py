@@ -39,7 +39,7 @@ from transformers import WhisperFeatureExtractor
 
 CACHE_DIR = Path("data_cache")
 WAV_DIR = CACHE_DIR / "d2_stratified_wavs"
-EXP_DIR = Path("experiments") / "A0_whisper_tiny_pv2speechend"
+EXP_DIR = Path("experiments") / "whisper_tiny_speech_aligned_contract"
 FULL_CONTEXT_FRAC = 0.9  # qualifying clip: valid (real) audio covers >= 90% of the context window,
                           # i.e. minimal structural left-padding to begin with -- so "last X% valid"
                           # below is actually removing real speech, not already-padded silence.

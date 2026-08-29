@@ -1,0 +1,7 @@
+category,n_words_in_category,n_clips_matched,n_incomplete,p_incomplete,ci_low,ci_high
+subordinate,21.0,538,453,0.842,0.8088,0.8704
+discourse,29.0,1385,832,0.6007,0.5747,0.6262
+coordinator,60.0,6355,3657,0.5755,0.5633,0.5876
+hesitation,15.0,671,365,0.544,0.5061,0.5813
+response_particle,9.0,612,319,0.5212,0.4817,0.5606
+BASELINE_all_clips,,15082,7567,0.5017,0.4937,0.5097

@@ -25,7 +25,7 @@ def main():
         exp_id="A0", context_s=args.context_s, epochs=args.epochs, batch_size=args.batch_size,
         lr=args.lr, num_workers=args.num_workers,
     )
-    out_dir = Path("experiments") / "A0_whisper_tiny"
+    out_dir = Path("experiments") / "whisper_tiny_baseline"
     train_whisper_experiment(cfg, out_dir)
 
 

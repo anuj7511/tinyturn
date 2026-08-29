@@ -23,4 +23,4 @@ parameter. Verified against the real feature extractor's own frame count and bou
 
 This checkpoint and its metrics are kept only as a historical/negative record (this mask bug, not
 just a training-data artifact) -- do not use it as A0's qualifying checkpoint. See
-`experiments/A0_whisper_tiny_pv2speechend/` for the corrected retrain.
+`experiments/whisper_tiny_speech_aligned_contract/` for the corrected retrain.

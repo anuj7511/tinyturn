@@ -1,0 +1,4 @@
+match_type,train_side_n,test_side_n,overlap_n,overlap_rate_pct,note
+exact_waveform_hash,3000,31527,0,0.0,SHA-256 of 16kHz/mono/int16-normalized waveform. Zero shared hashes.
+mfcc_cosine_naive_0.995_threshold,3000,31527,26173,83.02,"FALSE-POSITIVE ARTIFACT, not evidence of overlap -- see z-score correction below. A random unrelated test-train pair already averages 0.966 cosine sim (max 0.998 over 20,000 random pairs) on this 40-dim MFCC mean+std fingerprint; searching each of 31,527 queries against 3,000 candidates makes exceeding a FIXED 0.995 threshold almost certain by chance alone (multiple-comparisons / extreme-value effect), independent of any real duplication."
+mfcc_cosine_zscore_corrected,3000,31527,0,0.0,"Per-query z-score of top-1 similarity vs. that query's own similarity distribution across all 3,000 train candidates, requiring z>=8 AND raw sim>=0.999. Max z observed was 3.95 (nowhere near outlier territory) -- no defensible near-duplicate candidates."

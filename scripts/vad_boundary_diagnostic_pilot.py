@@ -42,8 +42,8 @@ from transformers import WhisperFeatureExtractor
 
 CACHE_DIR = Path("data_cache")
 WAV_DIR = CACHE_DIR / "d2_stratified_wavs"
-A0_DIR = Path("experiments") / "A0_whisper_tiny_pv2speechend"
-B1_DIR = Path("experiments") / "C1_B1_1s_pv2speechend"
+A0_DIR = Path("experiments") / "whisper_tiny_speech_aligned_contract"
+B1_DIR = Path("experiments") / "mel_trajectory_1s_speech_aligned_contract"
 N_MELS, N_FFT = 40, 512
 FRAME_LENGTH_S, HOP_LENGTH_S = 0.025, 0.010
 TRAJECTORY_NAMES = ["rel_energy", "pause_prob", "spectral_tilt", "spectral_flux", "envelope_activity"]
@@ -198,7 +198,7 @@ def main():
         df, float(b1_cfg["context_s"]), float(b1_metrics["threshold"]), target_sr=16000)
 
     result = {"n_pilot_clips": len(df), "A0": a0_summary, "B1_1s": b1_summary}
-    out_path = Path("experiments") / "8f_vad_boundary_diagnostic.json"
+    out_path = Path("experiments") / "vad_boundary_diagnostic_pilot.json"
     with open(out_path, "w") as f:
         json.dump({"summary": result,
                    "per_clip_A0": a0_out.to_dict(orient="records"),

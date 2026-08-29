@@ -1,14 +1,14 @@
 """
-Step 10 planning, item 5 prerequisite -- fix a protocol mismatch discovered while assembling the
-3-seed confirmation table.
+Fix a protocol mismatch discovered while assembling the 3-seed confirmation table for the
+hold-loss objective.
 
-step9_results_updated/P1ab_lambda0.5_{all,5050} (seed 42) were trained under the OLD fixed-5-epoch
-protocol (epochs=5, no early stopping, no lr schedule) -- the same P1ab_lambda0.5_{all,5050}_seed{43,44}
-arms, and the baseline at every seed (baseline_kaggle / baseline_no_pause_events_seed{43,44}), all use
-the 8h-validated protocol instead (epochs=40, early_stop_patience=6, lr_schedule=plateau). The plan's
-step 5 requires "identical training and early stopping" across seeds and explicitly gates reuse of an
-existing seed-42 run on "if their manifests and code hashes match" -- they don't here, so seed 42's
-lambda=0.5 arms need retraining under the matching protocol before a 3-seed table is meaningful.
+The seed-42 checkpoints for the proportional and 50:50 sampling arms of
+experiments/pause_event_sampling_comparison/ were trained under the OLD fixed-5-epoch protocol
+(epochs=5, no early stopping, no lr schedule) -- the same arms at seeds 43/44, and the baseline at
+every seed, all use the plateau/early-stopping protocol instead (epochs=40, early_stop_patience=6,
+lr_schedule=plateau). A 3-seed average requires identical training and early-stopping across seeds,
+so seed 42's two lambda=0.5 arms need retraining under the matching protocol before the 3-seed table
+is meaningful.
 
 Usage:
   python scripts/train_b1_lambda0.5_seed42_plateau_protocol_fix.py
@@ -19,18 +19,21 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from tinyturn.train_p1 import P1Config, train_p1
 
-BASELINE_CHECKPOINT = Path("step9_results_updated") / "baseline_kaggle" / "checkpoint.pt"
+BASELINE_CHECKPOINT = Path("experiments/pause_event_sampling_comparison") / "baseline_no_pause_events_seed42" / "checkpoint.pt"
 
 
 def main():
-    for balance, suffix in [("proportional", "all"), ("50:50", "5050")]:
+    for balance, exp_name in [
+        ("proportional", "pause_events_holdloss0.5_proportional_seed42"),
+        ("50:50", "pause_events_holdloss0.5_5050sampling_seed42"),
+    ]:
         cfg = P1Config(
-            exp_id=f"P1ab_lambda0.5_{suffix}_seed42_plateau", context_s=1.0,
+            exp_id=exp_name, context_s=1.0,
             epochs=40, early_stop_patience=6, lr_schedule="plateau",
             batch_size=64, lr=1e-3, num_workers=4, seed=42,
             lambda_hold=0.5, controlled_sampling=True, real_synth_balance=balance,
         )
-        out_dir = Path("experiments") / cfg.exp_id
+        out_dir = Path("experiments/pause_event_sampling_comparison") / cfg.exp_id
         train_p1(cfg, BASELINE_CHECKPOINT, out_dir)
 
 

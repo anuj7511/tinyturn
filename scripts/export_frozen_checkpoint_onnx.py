@@ -3,16 +3,16 @@ Step 10 planning, item 8 -- ONNX + INT8 export of the frozen checkpoint. Indepen
 test evaluation (uses only the frozen checkpoint + one sample input for tracing/latency), so this can
 run before, during, or after the test-set pass without affecting the "touched once" discipline there.
 
-Frozen checkpoint: experiments/B1_1s_64k_lambda0.5_5050_seed43/checkpoint.pt
+Frozen checkpoint: experiments/data_scale_64k_holdloss0.5_5050sampling_seed43/checkpoint.pt
   (sha256 ddaf7a8ea95b6675022920b68b95e7a1f8202ab403c3e7e11e08dc5f0892694f)
 
 Produces:
-  experiments/B1_1s_64k_lambda0.5_5050_seed43/model.onnx        -- FP32 ONNX export
-  experiments/B1_1s_64k_lambda0.5_5050_seed43/model_int8.onnx   -- INT8 dynamic-quantized (weights
+  experiments/data_scale_64k_holdloss0.5_5050sampling_seed43/model.onnx        -- FP32 ONNX export
+  experiments/data_scale_64k_holdloss0.5_5050sampling_seed43/model_int8.onnx   -- INT8 dynamic-quantized (weights
                                                                     only; no calibration data needed
                                                                     for dynamic quantization, so this
                                                                     doesn't touch val/calib/test)
-  experiments/B1_1s_64k_lambda0.5_5050_seed43/export_manifest.json -- sizes, latency (FP32 vs INT8),
+  experiments/data_scale_64k_holdloss0.5_5050sampling_seed43/export_manifest.json -- sizes, latency (FP32 vs INT8),
                                                                        MACs, PyTorch-vs-ONNX parity
                                                                        check on a real val clip.
 
@@ -35,7 +35,7 @@ from tinyturn.train import TRAJECTORY_NAMES
 from onnxruntime.quantization import quantize_dynamic, QuantType
 import onnxruntime as ort
 
-CKPT_DIR = Path("experiments") / "B1_1s_64k_lambda0.5_5050_seed43"
+CKPT_DIR = Path("experiments") / "data_scale_64k_holdloss0.5_5050sampling_seed43"
 ONNX_PATH = CKPT_DIR / "model.onnx"
 ONNX_INT8_PATH = CKPT_DIR / "model_int8.onnx"
 MANIFEST_PATH = CKPT_DIR / "export_manifest.json"

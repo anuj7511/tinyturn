@@ -21,11 +21,11 @@ from tinyturn.train_distill import DistillConfig, train_distill
 
 def main():
     cfg = DistillConfig(
-        exp_id="B1_1s_distill_d0", teacher_target="d1", alpha=1.0, T=2.0,
+        exp_id="distillation_isolation_control", teacher_target="d1", alpha=1.0, T=2.0,
         context_s=1.0, epochs=5, batch_size=64, lr=1e-3, num_workers=2, seed=42,
     )
-    baseline_checkpoint = Path("experiments") / "C1_B1_1s_pv2speechend" / "checkpoint.pt"
-    out_dir = Path("experiments") / "B1_1s_distill_d0"
+    baseline_checkpoint = Path("experiments") / "mel_trajectory_1s_speech_aligned_contract" / "checkpoint.pt"
+    out_dir = Path("experiments") / "distillation_isolation_control"
     train_distill(cfg, baseline_checkpoint, out_dir)
 
 

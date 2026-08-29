@@ -244,10 +244,10 @@ TARGET_RECALLS = [0.90, 0.95]  # used by the comparison cell below (at_matched_r
 RUN_DIRS = {}
 
 print("\\n=== training baseline (no pause events) ===")
-baseline_dir = OUT_DIR / "baseline_kaggle"
+baseline_dir = OUT_DIR / "baseline_no_pause_events_seed42"
 RUN_DIRS["baseline (no pause events)"] = baseline_dir
 if not (baseline_dir / "checkpoint.pt").exists():
-    baseline_cfg = ExperimentConfig(exp_id="baseline_kaggle", context_s=CONTEXT_S, use_trajectory=True,
+    baseline_cfg = ExperimentConfig(exp_id="baseline_no_pause_events_seed42", context_s=CONTEXT_S, use_trajectory=True,
                                      **PROTOCOL)
     train_experiment(baseline_cfg, baseline_dir)
 else:
@@ -258,9 +258,9 @@ cells.append(code_cell(
 '''runs = {
     "P1_plain": dict(lambda_hold=None, controlled_sampling=False, real_synth_balance="proportional"),
     "P1ab_lambda0.25": dict(lambda_hold=0.25, controlled_sampling=True, real_synth_balance="proportional"),
-    "P1ab_lambda0.5_all": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="proportional"),
-    "P1ab_lambda0.5_real_only": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="real_only"),
-    "P1ab_lambda0.5_5050": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="50:50"),
+    "pause_events_holdloss0.5_proportional": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="proportional"),
+    "pause_events_holdloss0.5_realonly_sampling": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="real_only"),
+    "pause_events_holdloss0.5_5050sampling": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="50:50"),
 }
 for tag, overrides in runs.items():
     d = OUT_DIR / tag

@@ -1,0 +1,8 @@
+slice,n,pct_of_parent,n_parent,n_in_feat_df,top_languages_pct,top_sources_pct,pct_synthetic
+explicit_incomplete,72052,52.73,136641,779,"{'eng': 6.5, 'rus': 6.0, 'por': 5.9}","{'chirp3_1': 71.4, 'chirp3_2': 28.1, 'chirp3_3_short': 0.4}",100.0
+implicit_incomplete,36334,26.59,136641,390,"{'eng': 6.7, 'rus': 6.3, 'por': 6.3}","{'chirp3_1': 62.2, 'chirp3_2': 37.4, 'chirp3_3_short': 0.4}",100.0
+incomplete_unknown_filler,28255,20.68,136641,311,"{'eng': 92.9, 'spa': 7.1}","{'liva_1': 54.9, 'midcentury_1': 15.5, 'mundo_1': 7.1}",15.2
+complete_with_midfiller,53950,40.17,134305,612,"{'eng': 8.4, 'rus': 8.1, 'por': 8.0}","{'chirp3_1': 81.0, 'chirp3_2': 18.7, 'chirp3_3_short': 0.3}",100.0
+complete_without_midfiller,52729,39.26,134305,593,"{'ind': 5.4, 'ben': 5.3, 'vie': 5.3}","{'chirp3_1': 54.8, 'chirp3_2': 44.9, 'chirp3_3_short': 0.4}",100.0
+real_audio,47603,17.57,270946,526,"{'eng': 91.6, 'spa': 8.4}","{'liva_1': 65.0, 'midcentury_1': 17.8, 'mundo_1': 8.4}",0.0
+synthetic_audio,223343,82.43,270946,2474,"{'eng': 9.9, 'rus': 5.8, 'por': 5.7}","{'chirp3_1': 65.7, 'chirp3_2': 30.3, 'rime_2': 1.6}",100.0

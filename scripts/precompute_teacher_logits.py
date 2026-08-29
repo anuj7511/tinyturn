@@ -1,7 +1,7 @@
 """
-Step 10 planning, item 2 -- precompute A0_boundary_robust teacher logits for the D2 train split.
+Step 10 planning, item 2 -- precompute whisper_tiny_boundary_robust_retrain teacher logits for the D2 train split.
 
-Per the plan: "Use A0_boundary_robust as an offline teacher despite its deployment-robustness
+Per the plan: "Use whisper_tiny_boundary_robust_retrain as an offline teacher despite its deployment-robustness
 failure." Two distillation targets, both derived from the same three per-clip raw logits (no
 sigmoid -- distillation operates on logits so temperature scaling is well-defined):
   D1: canonical-boundary A0 logit only.
@@ -34,7 +34,7 @@ import json
 
 CACHE_DIR = Path("data_cache")
 WAV_DIR = CACHE_DIR / "d2_stratified_wavs"
-A0_DIR = Path("experiments") / "A0_boundary_robust"
+A0_DIR = Path("experiments") / "whisper_tiny_boundary_robust_retrain"
 BOUNDARY_AUG_PATH = CACHE_DIR / "d2_train_boundary_augmentation.parquet"
 OUT_PATH = CACHE_DIR / "teacher_logits_a0_boundary_robust_train.parquet"
 FRAME_LENGTH_S, HOP_LENGTH_S = 0.025, 0.010

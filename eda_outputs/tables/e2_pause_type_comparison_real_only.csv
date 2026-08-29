@@ -1,0 +1,13 @@
+feature,condition,n,mean,ci_low,ci_high
+energy_slope,a_internal_hold_pause,2230.0,-0.7652,-1.185,-0.3328
+energy_slope,b_final_pause_complete,1084.0,-2.9792,-3.6357,-2.3223
+energy_slope,c_final_pause_incomplete,1146.0,1.1624,0.4221,1.9187
+energy_slope,cliffs_delta_a_vs_c,,-0.125,,
+energy_slope,cliffs_delta_a_vs_b,,0.1058,,
+energy_slope,cliffs_delta_b_vs_c,,-0.2194,,
+f0_slope,a_internal_hold_pause,2055.0,-1.6498,-1.9506,-1.3093
+f0_slope,b_final_pause_complete,671.0,-1.4476,-1.9421,-0.8542
+f0_slope,c_final_pause_incomplete,882.0,-1.2375,-1.6552,-0.8393
+f0_slope,cliffs_delta_a_vs_c,,-0.0482,,
+f0_slope,cliffs_delta_a_vs_b,,-0.0107,,
+f0_slope,cliffs_delta_b_vs_c,,-0.04,,

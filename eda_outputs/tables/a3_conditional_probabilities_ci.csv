@@ -1,0 +1,5 @@
+condition,n,n_incomplete,P(incomplete)_pct,wilson_ci_low,wilson_ci_high
+endfiller=True,72052,72052,100.0,99.99,100.0
+endfiller=False,143013,36334,25.41,25.18,25.63
+midfiller=True,112195,58245,51.91,51.62,52.21
+midfiller=False,102870,50141,48.74,48.44,49.05

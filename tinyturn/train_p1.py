@@ -1,6 +1,6 @@
 """
 Step 7 / Phase-2 Step 9 -- P1: final clips + internal-pause continuation events, vs. the
-C1_B1_1s(_pv2speechend) baseline (final clips only, same architecture/context/epochs/batch/lr).
+context_ablation_mel_trajectory_1s(_pv2speechend) baseline (final clips only, same architecture/context/epochs/batch/lr).
 
 `lambda_hold=None` (default) reproduces Step 7's original recipe exactly: a straight, unweighted
 blend of final clips and pause events in one combined loss mean, all pause events used every epoch.
@@ -297,7 +297,7 @@ def train_p1(cfg: P1Config, baseline_checkpoint: Path, out_dir: Path):
                   torch.randn(1, n_frames, len(TRAJECTORY_NAMES)))
     report["macs"] = int(count_macs(model, *mac_inputs))
     # ONNX export/latency are non-essential to Step 9's actual comparison (AUC / FCR-at-holds) and
-    # this environment's `onnx` package is currently missing (present when B1_1s_8h_longrun was
+    # this environment's `onnx` package is currently missing (present when mel_trajectory_1s_earlystopped_longrun was
     # trained -- environment drift, not a real code bug) -- caught rather than left to crash the
     # run after the expensive training loop already finished, matching train_whisper.py's identical
     # handling of the same gap.

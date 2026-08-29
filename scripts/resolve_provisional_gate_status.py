@@ -26,7 +26,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from tinyturn.evaluate import fcr_at_fixed_recall
 
-VAD_JSON = Path("experiments") / "8f_vad_boundary_diagnostic.json"
+VAD_JSON = Path("experiments") / "vad_boundary_diagnostic_pilot.json"
 N_BOOT = 200
 RNG_SEED = 42
 Z_95 = 1.959963984540054
@@ -138,9 +138,9 @@ def main():
     b1_results = analyze(d["per_clip_B1_1s"], "B1@1s (context only, not part of 8g's gate)")
 
     out = {"n_pilot": len(d["per_clip_A0"]), "A0": a0_results, "B1_1s": b1_results}
-    with open(Path("experiments") / "A0_whisper_tiny_pv2speechend" / "8f_ci_analysis_pilot.json", "w") as f:
+    with open(Path("experiments") / "whisper_tiny_speech_aligned_contract" / "8f_ci_analysis_pilot.json", "w") as f:
         json.dump(out, f, indent=2, default=str)
-    print("\nsaved experiments/A0_whisper_tiny_pv2speechend/8f_ci_analysis_pilot.json")
+    print("\nsaved experiments/whisper_tiny_speech_aligned_contract/8f_ci_analysis_pilot.json")
 
 
 if __name__ == "__main__":

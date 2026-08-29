@@ -2,7 +2,7 @@
 8g remediation, Step 1 (brief Section 2, "Boundary-robust A0@4s retrain"): precompute
 canonical/alt-threshold/Silero boundary estimates for D2 TRAIN-split audio.
 
-Val already has alt/silero boundaries from 8f's full rerun (8f_vad_boundary_diagnostic_v2.json);
+Val already has alt/silero boundaries from 8f's full rerun (vad_boundary_diagnostic_full_val.json);
 calib never needs them at all -- the brief is explicit that calibration stays on the canonical
 boundary only, so drift in the augmented-training boundary set can't leak into where the deployed
 threshold sits. Train is the only split that needs this precomputed.

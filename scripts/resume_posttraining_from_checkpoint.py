@@ -88,9 +88,9 @@ def finish(cfg: ExperimentConfig, out_dir: Path):
 
 
 EXPERIMENTS = {
-    "B0": dict(use_trajectory=False, use_f0=False, dir_name="B0_mel_only"),
-    "B1": dict(use_trajectory=True, use_f0=False, dir_name="B1_trajectory_fusion"),
-    "B1-f0": dict(use_trajectory=True, use_f0=True, dir_name="B1f0_trajectory_fusion_f0"),
+    "B0": dict(use_trajectory=False, use_f0=False, dir_name="mel_only_baseline"),
+    "B1": dict(use_trajectory=True, use_f0=False, dir_name="mel_trajectory_baseline"),
+    "B1-f0": dict(use_trajectory=True, use_f0=True, dir_name="mel_trajectory_with_f0"),
 }
 
 if __name__ == "__main__":

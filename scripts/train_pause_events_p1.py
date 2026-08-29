@@ -24,14 +24,14 @@ def main():
     p.add_argument("--lr", type=float, default=1e-3)
     p.add_argument("--num-workers", type=int, default=2)
     p.add_argument("--baseline-checkpoint", type=str,
-                   default="experiments/C1_B1_1s_pv2speechend/checkpoint.pt")
+                   default="experiments/mel_trajectory_1s_speech_aligned_contract/checkpoint.pt")
     args = p.parse_args()
 
     cfg = P1Config(
         exp_id="P1", context_s=args.context_s,
         epochs=args.epochs, batch_size=args.batch_size, lr=args.lr, num_workers=args.num_workers,
     )
-    train_p1(cfg, Path(args.baseline_checkpoint), Path("experiments/P1_pause_events"))
+    train_p1(cfg, Path(args.baseline_checkpoint), Path("experiments/pause_events_original_recipe"))
 
 
 if __name__ == "__main__":

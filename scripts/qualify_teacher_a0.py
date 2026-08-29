@@ -24,9 +24,9 @@ import json
 import sys
 from pathlib import Path
 
-A0_DIR = Path("experiments") / "A0_whisper_tiny_pv2speechend"
-PADDING_PATH = A0_DIR / "8e_padding_counterfactual.json"
-VAD_PATH = Path("experiments") / "8f_vad_boundary_diagnostic.json"
+A0_DIR = Path("experiments") / "whisper_tiny_speech_aligned_contract"
+PADDING_PATH = A0_DIR / "padding_counterfactual.json"
+VAD_PATH = Path("experiments") / "vad_boundary_diagnostic_pilot.json"
 
 
 def main():
@@ -75,7 +75,7 @@ def main():
             "before treating this qualification as final."
         )
 
-    out_path = A0_DIR / "8g_qualification.json"
+    out_path = A0_DIR / "qualification_original.json"
     with open(out_path, "w") as f:
         json.dump(verdict, f, indent=2, default=str)
 

@@ -1,0 +1,8 @@
+domain,n,energy_slope_auc,note
+synthetic_only,2473,0.668,
+real_only,526,0.6,
+hindi,147,0.585,
+english,744,0.615,
+source=chirp3_1,1606,0.683,
+source=chirp3_2,760,0.642,
+source=liva_1,345,0.604,

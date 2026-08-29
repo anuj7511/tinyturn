@@ -17,9 +17,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from tinyturn.train_ranking import RankingConfig, train_ranking
 
 SEED_BASELINE_CHECKPOINTS = {
-    42: Path("step9_results_updated") / "baseline_kaggle" / "checkpoint.pt",
-    43: Path("step9_results_updated") / "baseline_no_pause_events_seed43" / "checkpoint.pt",
-    44: Path("step9_results_updated") / "baseline_no_pause_events_seed44" / "checkpoint.pt",
+    42: Path("experiments/pause_event_sampling_comparison") / "baseline_no_pause_events_seed42" / "checkpoint.pt",
+    43: Path("experiments/pause_event_sampling_comparison") / "baseline_no_pause_events_seed43" / "checkpoint.pt",
+    44: Path("experiments/pause_event_sampling_comparison") / "baseline_no_pause_events_seed44" / "checkpoint.pt",
 }
 
 
@@ -32,7 +32,7 @@ def main():
                           "the original fixed 5-epoch protocol.")
     args = ap.parse_args()
 
-    exp_id = f"B1_1s_ranking_seed{args.seed}" + ("_plateau" if args.plateau else "")
+    exp_id = f"pairwise_ranking_singleseed_seed{args.seed}" + ("_plateau" if args.plateau else "")
     cfg = RankingConfig(
         exp_id=exp_id, context_s=1.0,
         epochs=40 if args.plateau else 5,
@@ -41,7 +41,7 @@ def main():
         batch_size=64, lr=1e-3, num_workers=0, seed=args.seed, margin=0.2, rank_weight=0.1,
     )
     baseline_checkpoint = (SEED_BASELINE_CHECKPOINTS[args.seed] if args.plateau
-                            else Path("experiments") / "C1_B1_1s_pv2speechend" / "checkpoint.pt")
+                            else Path("experiments") / "mel_trajectory_1s_speech_aligned_contract" / "checkpoint.pt")
     out_dir = Path("experiments") / exp_id
     train_ranking(cfg, baseline_checkpoint, out_dir)
 

@@ -49,7 +49,7 @@ from scripts.ground_truth_conditioned_metric_audit import (
 CACHE_DIR = Path("data_cache")
 WAV_DIR = CACHE_DIR / "d2_stratified_wavs"
 BOUNDARY_CACHE_PATH = Path("experiments") / "8f_val_boundaries_cache.parquet"
-OUT_PATH = Path("experiments") / "8f_vad_boundary_diagnostic_b1_64k.json"
+OUT_PATH = Path("experiments") / "vad_boundary_diagnostic_data_scale_64k.json"
 
 N_MELS, N_FFT = 40, 512
 FRAME_LENGTH_S, HOP_LENGTH_S = 0.025, 0.010
@@ -63,14 +63,14 @@ ALT_PEAK_OFFSET_DB = -30.0
 
 CHECKPOINTS = {
     "B1_64k_baseline": {
-        42: "experiments/B1_1s_64k_baseline",
-        43: "experiments/B1_1s_64k_baseline_seed43",
-        44: "experiments/B1_1s_64k_baseline_seed44",
+        42: "experiments/data_scale_64k_baseline_seed42",
+        43: "experiments/data_scale_64k_baseline_seed43",
+        44: "experiments/data_scale_64k_baseline_seed44",
     },
     "B1_64k_lambda0.5_5050": {
-        42: "experiments/B1_1s_64k_lambda0.5_5050",
-        43: "experiments/B1_1s_64k_lambda0.5_5050_seed43",
-        44: "experiments/B1_1s_64k_lambda0.5_5050_seed44",
+        42: "experiments/data_scale_64k_holdloss0.5_5050sampling_seed42",
+        43: "experiments/data_scale_64k_holdloss0.5_5050sampling_seed43",
+        44: "experiments/data_scale_64k_holdloss0.5_5050sampling_seed44",
     },
 }
 

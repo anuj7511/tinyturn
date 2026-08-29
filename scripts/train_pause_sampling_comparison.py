@@ -3,7 +3,7 @@ Phase-3 Step 9 -- controlled, early-stopped rerun + three-arm real/synthetic pau
 comparison + short-complete / response-particle recall reporting.
 
 Every run below (baseline + 4 new B1@1s trainings) uses the exact same protocol 8h found necessary
-for the no-pause-event baseline (`experiments/B1_1s_8h_longrun`, reused as-is rather than retrained
+for the no-pause-event baseline (`experiments/mel_trajectory_1s_earlystopped_longrun`, reused as-is rather than retrained
 -- it already used this protocol): epochs<=40 ceiling, early_stop_patience=6, lr_schedule="plateau",
 batch_size=64, num_workers=2, seed=42. Every prior Step 9 result (`PHASE2_RESULTS_8a-9.md`) shared
 B1's OLD fixed-5-epoch protocol instead, which 8h showed was not calibrated to this architecture's
@@ -58,7 +58,7 @@ from tinyturn.train_p1 import P1Config, train_p1
 from torch.utils.data import DataLoader
 
 CACHE_DIR = Path("data_cache")
-BASELINE_DIR = Path("experiments") / "B1_1s_8h_longrun"  # already trained under this protocol (8h)
+BASELINE_DIR = Path("experiments") / "mel_trajectory_1s_earlystopped_longrun"  # already trained under this protocol (8h)
 OUT_DIR = Path("experiments") / "step9_controlled_rerun"
 CONTEXT_S = 1.0
 TARGET_RECALLS = [0.90, 0.95]
@@ -215,9 +215,9 @@ def main():
     runs = {
         "P1_plain": dict(lambda_hold=None, controlled_sampling=False, real_synth_balance="proportional"),
         "P1ab_lambda0.25": dict(lambda_hold=0.25, controlled_sampling=True, real_synth_balance="proportional"),
-        "P1ab_lambda0.5_all": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="proportional"),
-        "P1ab_lambda0.5_real_only": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="real_only"),
-        "P1ab_lambda0.5_5050": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="50:50"),
+        "pause_events_holdloss0.5_proportional": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="proportional"),
+        "pause_events_holdloss0.5_realonly_sampling": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="real_only"),
+        "pause_events_holdloss0.5_5050sampling": dict(lambda_hold=0.5, controlled_sampling=True, real_synth_balance="50:50"),
     }
     run_dirs = {"baseline (no pause events, 8h longrun)": BASELINE_DIR}
     for tag, overrides in runs.items():

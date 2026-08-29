@@ -1,0 +1,6 @@
+metric,n,successes,proportion,ci_lo,ci_hi,note
+n_real,48,48,1.0,,,real-audio (synthetic=False) rows in the 400-clip ASR sample
+n_real_derived_filler,48,6,0.125,0.05856971750400844,0.24700727086054822,P(endfiller_derived=True | real) -- how common a derived trailing filler is on real audio
+n_real_derived_filler_incomplete,6,6,1.0,0.6096569663469354,0.9999999999999999,"P(endpoint_bool=False | real, endfiller_derived=True) -- the headline conditional; denominator is n_real_derived_filler, NOT n_real"
+n_real_incomplete,48,24,0.5,0.36389098932037767,0.6361090106796223,"P(endpoint_bool=False | real) -- base rate of incomplete among real audio, for comparison"
+n_real_incomplete_with_filler,24,6,0.25,0.1199920347934233,0.4489982531210644,"P(endfiller_derived=True | real, endpoint_bool=False) -- reverse conditional, denominator is n_real_incomplete"

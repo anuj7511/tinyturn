@@ -1,0 +1,3 @@
+feature,speech_aligned,fixed_postroll_200ms,original
+energy_slope_1000ms,0.64,0.643,0.651
+f0_slope_1000ms,0.683,0.689,0.694

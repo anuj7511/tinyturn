@@ -53,24 +53,24 @@ RESPONSE_PARTICLES = {
 
 CHECKPOINTS = {
     "B1_baseline": {
-        42: "step9_results_updated/baseline_kaggle",
-        43: "step9_results_updated/baseline_no_pause_events_seed43",
-        44: "step9_results_updated/baseline_no_pause_events_seed44",
+        42: "experiments/pause_event_sampling_comparison/baseline_no_pause_events_seed42",
+        43: "experiments/pause_event_sampling_comparison/baseline_no_pause_events_seed43",
+        44: "experiments/pause_event_sampling_comparison/baseline_no_pause_events_seed44",
     },
     "ranking": {
-        42: "experiments/B1_1s_ranking_seed42_plateau",
-        43: "experiments/B1_1s_ranking_seed43_plateau",
-        44: "experiments/B1_1s_ranking_seed44_plateau",
+        42: "experiments/pairwise_ranking_seed42",
+        43: "experiments/pairwise_ranking_seed43",
+        44: "experiments/pairwise_ranking_seed44",
     },
     "lambda0.5_all": {
-        42: "experiments/P1ab_lambda0.5_all_seed42_plateau",
-        43: "step9_results_updated/P1ab_lambda0.5_all_seed43",
-        44: "step9_results_updated/P1ab_lambda0.5_all_seed44",
+        42: "experiments/pause_event_sampling_comparison/pause_events_holdloss0.5_proportional_seed42",
+        43: "experiments/pause_event_sampling_comparison/pause_events_holdloss0.5_proportional_seed43",
+        44: "experiments/pause_event_sampling_comparison/pause_events_holdloss0.5_proportional_seed44",
     },
     "lambda0.5_5050": {
-        42: "experiments/P1ab_lambda0.5_5050_seed42_plateau",
-        43: "step9_results_updated/P1ab_lambda0.5_5050_seed43",
-        44: "step9_results_updated/P1ab_lambda0.5_5050_seed44",
+        42: "experiments/pause_event_sampling_comparison/pause_events_holdloss0.5_5050sampling_seed42",
+        43: "experiments/pause_event_sampling_comparison/pause_events_holdloss0.5_5050sampling_seed43",
+        44: "experiments/pause_event_sampling_comparison/pause_events_holdloss0.5_5050sampling_seed44",
     },
 }
 

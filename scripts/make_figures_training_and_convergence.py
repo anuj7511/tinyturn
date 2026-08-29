@@ -22,8 +22,8 @@ def load(p):
 
 
 def fig_8d_training_curves():
-    a0 = load(EXP / "A0_whisper_tiny_pv2speechend" / "metrics.json")["history"]
-    b1 = load(EXP / "C1_B1_1s_pv2speechend" / "metrics.json")["history"]
+    a0 = load(EXP / "whisper_tiny_speech_aligned_contract" / "metrics.json")["history"]
+    b1 = load(EXP / "mel_trajectory_1s_speech_aligned_contract" / "metrics.json")["history"]
 
     fig, axes = plt.subplots(2, 2, figsize=(10, 7))
     for row, (name, hist) in enumerate([("A0 (context_s=4.0)", a0), ("B1@1s (context_s=1.0)", b1)]):
@@ -51,8 +51,8 @@ def fig_8d_training_curves():
 
 
 def fig_8h_convergence():
-    orig = load(EXP / "C1_B1_1s_pv2speechend" / "metrics.json")["history"]
-    long = load(EXP / "B1_1s_8h_longrun" / "metrics.json")["history"]
+    orig = load(EXP / "mel_trajectory_1s_speech_aligned_contract" / "metrics.json")["history"]
+    long = load(EXP / "mel_trajectory_1s_earlystopped_longrun" / "metrics.json")["history"]
 
     fig, ax = plt.subplots(figsize=(8, 5.5))
     e1 = [h["epoch"] for h in orig]; a1 = [h["val_auc"] for h in orig]
@@ -80,7 +80,7 @@ def fig_8h_convergence():
 
 
 def fig_8f_forest_plot():
-    d = load(EXP / "A0_whisper_tiny_pv2speechend" / "8f_ci_analysis_pilot.json")
+    d = load(EXP / "whisper_tiny_speech_aligned_contract" / "8f_ci_analysis_pilot.json")
     a0 = d["A0"]
 
     criteria = [
@@ -116,11 +116,11 @@ def fig_8f_forest_plot():
 
 def fig_step9_training_curves():
     runs = [
-        ("baseline (no pause events)", EXP / "C1_B1_1s_pv2speechend"),
-        ("P1 plain (Step 7 recipe)", EXP / "P1_pause_events_pv2speechend"),
-        ("P1a+P1b λ=0.1", EXP / "step9_P1ab_lambda0.1"),
-        ("P1a+P1b λ=0.25", EXP / "step9_P1ab_lambda0.25"),
-        ("P1a+P1b λ=0.5", EXP / "step9_P1ab_lambda0.5"),
+        ("baseline (no pause events)", EXP / "mel_trajectory_1s_speech_aligned_contract"),
+        ("P1 plain (Step 7 recipe)", EXP / "pause_events_contract_fixed_plain"),
+        ("P1a+P1b λ=0.1", EXP / "pause_events_holdloss0.1_5epoch"),
+        ("P1a+P1b λ=0.25", EXP / "pause_events_holdloss0.25_5epoch"),
+        ("P1a+P1b λ=0.5", EXP / "pause_events_holdloss0.5_5epoch"),
     ]
     fig, ax = plt.subplots(figsize=(8, 5.5))
     for name, d in runs:
@@ -144,11 +144,11 @@ def fig_step9_training_curves():
 
 def fig_step9_auc_comparison():
     runs = [
-        ("baseline", EXP / "C1_B1_1s_pv2speechend"),
-        ("P1 plain", EXP / "P1_pause_events_pv2speechend"),
-        ("P1a+P1b\nλ=0.1", EXP / "step9_P1ab_lambda0.1"),
-        ("P1a+P1b\nλ=0.25", EXP / "step9_P1ab_lambda0.25"),
-        ("P1a+P1b\nλ=0.5", EXP / "step9_P1ab_lambda0.5"),
+        ("baseline", EXP / "mel_trajectory_1s_speech_aligned_contract"),
+        ("P1 plain", EXP / "pause_events_contract_fixed_plain"),
+        ("P1a+P1b\nλ=0.1", EXP / "pause_events_holdloss0.1_5epoch"),
+        ("P1a+P1b\nλ=0.25", EXP / "pause_events_holdloss0.25_5epoch"),
+        ("P1a+P1b\nλ=0.5", EXP / "pause_events_holdloss0.5_5epoch"),
     ]
     names, main_auc, real_auc = [], [], []
     for name, d in runs:

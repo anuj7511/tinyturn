@@ -1,0 +1,5 @@
+variable,chi2,dof,p_value,n_categories_tested,significant_at_0.05
+endpoint_bool,23.35,1,0.0,2,True
+synthetic,122.66,1,0.0,2,True
+dataset,164.64,7,0.0,8,True
+language,183.61,22,0.0,23,True

@@ -1,0 +1,5 @@
+context_window_s,n_usable,n_window_covers_full_clip,energy_slope_auc,energy_slope_n_valid,energy_slope_missing_pct,energy_slope_cliffs_delta,f0_slope_auc,f0_slope_n_valid,f0_slope_missing_pct,f0_slope_cliffs_delta,energy_slope_synthetic_median_diff
+2.0,800,7,0.547,800,0.0,0.093,0.592,800,0.0,-0.185,0.71
+4.0,800,131,0.619,800,0.0,0.239,0.547,800,0.0,-0.094,0.13
+6.0,800,340,0.588,800,0.0,0.176,0.524,800,0.0,-0.047,0.03
+8.0,800,511,0.614,800,0.0,0.227,0.517,800,0.0,-0.033,0.17

@@ -16,10 +16,10 @@ Steps 1-3 of the brief's 5-step remediation:
 rather than iterating -- are a separate manual decision after this script finishes; see the printed
 next-steps at the end.)
 
-GATED on 8h-A0 resolving first (open_dependency in experiments/A0_whisper_tiny_pv2speechend/
-8g_qualification_v2.json): retraining against an ambiguously-converged base protocol would make "did
+GATED on 8h-A0 resolving first (open_dependency in experiments/whisper_tiny_speech_aligned_contract/
+qualification_ci_gated.json): retraining against an ambiguously-converged base protocol would make "did
 augmentation fix boundary sensitivity" and "would fixing convergence alone have done it" impossible
-to tell apart. This script checks for experiments/8h_a0_step1_significance.json (produced by
+to tell apart. This script checks for experiments/convergence_significance_whisper_tiny.json (produced by
 run_8h_a0_step1_significance.py) before running, and refuses to proceed without it unless --force is
 passed explicitly.
 
@@ -39,8 +39,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from tinyturn.train_whisper import WhisperExperimentConfig, train_whisper_experiment
 from tinyturn.whisper_dataset import TRAIN_BOUNDARY_AUGMENTATION_PATH
 
-OUT_DIR = Path("experiments") / "A0_whisper_tiny_boundary_robust"
-STEP1_SIGNIFICANCE_PATH = Path("experiments") / "8h_a0_step1_significance.json"
+OUT_DIR = Path("experiments") / "whisper_tiny_baseline_boundary_robust"
+STEP1_SIGNIFICANCE_PATH = Path("experiments") / "convergence_significance_whisper_tiny.json"
 FORCE = "--force" in sys.argv
 
 CONTEXT_S = 4.0             # brief's "Model decision": A0@4s, not @2s, is the teacher candidate.
@@ -66,7 +66,7 @@ def main():
         print(
             f"ERROR: {STEP1_SIGNIFICANCE_PATH} not found.\n"
             "This remediation retrain is explicitly gated on 8h-A0 resolving first (brief Section "
-            "2 / 8g_qualification_v2.json's own open_dependency note): retraining against an "
+            "2 / qualification_ci_gated.json's own open_dependency note): retraining against an "
             "ambiguously-converged base protocol would make it impossible to tell whether "
             "augmentation fixed boundary sensitivity, or fixing convergence alone would have.\n"
             "Run run_8h_a0_step1_significance.py first (needs the Kaggle-retrained A0@4s checkpoint "
@@ -81,7 +81,7 @@ def main():
               "once the correct training protocol is known.\n")
 
     cfg = WhisperExperimentConfig(
-        exp_id="A0_boundary_robust", context_s=CONTEXT_S, epochs=EPOCHS,
+        exp_id="whisper_tiny_boundary_robust_retrain", context_s=CONTEXT_S, epochs=EPOCHS,
         early_stop_patience=EARLY_STOP_PATIENCE, lr_schedule=LR_SCHEDULE,
         batch_size=BATCH_SIZE, lr=1e-5, num_workers=NUM_WORKERS, seed=SEED,
         augment_boundaries=True,

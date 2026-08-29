@@ -1,0 +1,4 @@
+window_ms,n,cv_accuracy,cv_accuracy_std,majority_baseline,auc_direction_normalized,auc_ci_low,auc_ci_high
+50,3000,0.5207,0.0111,0.5067,0.5259,0.5086,0.5473
+100,3000,0.5297,0.0085,0.5067,0.542,0.5222,0.5604
+200,3000,0.5603,0.0099,0.5067,0.5805,0.5641,0.5998

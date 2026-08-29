@@ -6,7 +6,7 @@ runtime -- tinyturn.train_whisper now auto-detects and uses it). Mirrors what 8h
 B1: reports best-epoch vs. final-epoch for the existing fixed-epoch A0 run, then runs early-stopped
 retrains at both context lengths under the identical `pv2-speechend` contract + corrected masking.
 
-1. Confirms directly (not assumed) that A0_whisper_tiny_pv2speechend used a FIXED epoch budget (2
+1. Confirms directly (not assumed) that whisper_tiny_speech_aligned_contract used a FIXED epoch budget (2
    epochs, no early stopping, no LR schedule) and whether val AUC was still rising at the end.
 2. Trains ONE A0@4s with early stopping (max epochs / patience configurable below) to a NEW
    directory, so the existing qualifying checkpoint stays untouched.
@@ -36,7 +36,7 @@ from transformers import WhisperFeatureExtractor
 
 CACHE_DIR = Path("data_cache")
 WAV_DIR = CACHE_DIR / "d2_stratified_wavs"
-ORIGINAL_4S_DIR = Path("experiments") / "A0_whisper_tiny_pv2speechend"
+ORIGINAL_4S_DIR = Path("experiments") / "whisper_tiny_speech_aligned_contract"
 LONGRUN_4S_DIR = Path("experiments") / "A0_4s_8hA0_longrun"
 LONGRUN_2S_DIR = Path("experiments") / "A0_2s_8hA0_longrun"
 
@@ -51,7 +51,7 @@ def analyze_existing_run():
     best_h = max(history, key=lambda h: h["val_auc"])
     best_epoch, best_val_auc = best_h["epoch"], best_h["val_auc"]
     final_epoch = history[-1]["epoch"]
-    print("=== Existing A0_whisper_tiny_pv2speechend run (fixed 2-epoch protocol) ===")
+    print("=== Existing whisper_tiny_speech_aligned_contract run (fixed 2-epoch protocol) ===")
     for h in history:
         marker = "  <- best" if h["epoch"] == best_epoch else ""
         print(f"  epoch {h['epoch']}: val_auc={h['val_auc']:.4f} loss={h['train_loss']:.4f}{marker}")

@@ -3,9 +3,9 @@ Step 10 planning, item 8 -- THE official-test-set evaluation. Touched exactly on
 project's Section 8 discipline ("official 31,527-row HF test set... touched once per finalist").
 
 Frozen per explicit user instruction:
-  checkpoint: experiments/B1_1s_64k_lambda0.5_5050_seed43/checkpoint.pt
+  checkpoint: experiments/data_scale_64k_holdloss0.5_5050sampling_seed43/checkpoint.pt
     (sha256 ddaf7a8ea95b6675022920b68b95e7a1f8202ab403c3e7e11e08dc5f0892694f -- see
-    experiments/B1_1s_64k_lambda0.5_5050_seed43/FROZEN_MANIFEST.json)
+    experiments/data_scale_64k_holdloss0.5_5050sampling_seed43/FROZEN_MANIFEST.json)
   temperature: T=1.5142 (user said 1.514; stored value from temperature_scaling_64k.json used
     verbatim, matches to 3 decimals)
   threshold: 0.612 (on the TEMPERATURE-SCALED probability, selected on calib only -- see Section 6f)
@@ -92,7 +92,7 @@ CKPT_ARR_DIR = CACHE_DIR / "_official_test_checkpoint_arrays"
 CHECKPOINT_EVERY = 2000
 N_WORKERS = 14
 
-FROZEN_CHECKPOINT_DIR = Path("experiments") / "B1_1s_64k_lambda0.5_5050_seed43"
+FROZEN_CHECKPOINT_DIR = Path("experiments") / "data_scale_64k_holdloss0.5_5050sampling_seed43"
 TEMPERATURE = 1.5142
 THRESHOLD_TEMP_SCALED = 0.612
 CONTEXT_S = 1.0

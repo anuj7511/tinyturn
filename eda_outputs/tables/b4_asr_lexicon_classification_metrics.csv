@@ -1,0 +1,4 @@
+group,n,tp,tn,fp,fn,precision,recall,recall_ci,f1,specificity,specificity_ci,balanced_accuracy,pos_support,neg_support
+overall,344,34,224,12,74,0.739,0.315,"(np.float64(0.235), np.float64(0.407))",0.442,0.949,"(np.float64(0.913), np.float64(0.971))",0.632,108,236
+lexicon_supported,169,34,106,10,19,0.773,0.642,"(np.float64(0.507), np.float64(0.757))",0.701,0.914,"(np.float64(0.849), np.float64(0.953))",0.778,53,116
+lexicon_unsupported_exploratory,175,0,118,2,55,0.0,0.0,"(0.0, np.float64(0.065))",,0.983,"(np.float64(0.941), np.float64(0.995))",0.492,55,120

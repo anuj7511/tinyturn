@@ -59,15 +59,15 @@ from transformers import WhisperFeatureExtractor
 
 CACHE_DIR = Path("data_cache")
 WAV_DIR = CACHE_DIR / "d2_stratified_wavs"
-# Optional sys.argv[1]: run against a different A0 checkpoint dir (e.g. the 8g-remediation
-# boundary-robust retrain). OUT_PATH is suffixed by that dir's name so it never clobbers the
-# canonical A0's own recorded 8f result -- 8g's qualification script reads OUT_PATH by name, so a
+# Optional sys.argv[1]: run against a different A0 checkpoint dir (e.g. the boundary-robust
+# remediation retrain). OUT_PATH is suffixed by that dir's name so it never clobbers the canonical
+# A0's own recorded result -- the teacher-qualification script reads OUT_PATH by name, so a
 # remediation rerun must point it there explicitly too (see qualify_teacher_a0_ci_gated.py's own
 # sys.argv[1] override).
-A0_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("experiments") / "A0_whisper_tiny_pv2speechend"
-B1_DIR = Path("experiments") / "C1_B1_1s_pv2speechend"
-OUT_PATH = (Path("experiments") / "8f_vad_boundary_diagnostic_v2.json" if len(sys.argv) <= 1
-            else Path("experiments") / f"8f_vad_boundary_diagnostic_v2__{A0_DIR.name}.json")
+A0_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("experiments") / "whisper_tiny_speech_aligned_contract"
+B1_DIR = Path("experiments") / "mel_trajectory_1s_speech_aligned_contract"
+OUT_PATH = (Path("experiments") / "vad_boundary_diagnostic_full_val.json" if len(sys.argv) <= 1
+            else Path("experiments") / f"vad_boundary_diagnostic_full_val_{A0_DIR.name}.json")
 N_MELS, N_FFT = 40, 512
 FRAME_LENGTH_S, HOP_LENGTH_S = 0.025, 0.010
 TRAJECTORY_NAMES = ["rel_energy", "pause_prob", "spectral_tilt", "spectral_flux", "envelope_activity"]
