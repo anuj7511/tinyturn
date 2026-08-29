@@ -2,8 +2,7 @@
 
 TinyTurn is a lightweight end-of-turn (turn-completion) detection model for voice agents: given
 the last second or so of a speaker's audio, it predicts whether the speaker has actually finished
-their conversational turn or is just mid-pause. This is the same problem tackled by
-[pipecat-ai's smart-turn](https://github.com/pipecat-ai/smart-turn), and TinyTurn is trained and
+their conversational turn or is just mid-pause. TinyTurn is trained and
 evaluated against pipecat-ai's `smart-turn-data-v3.2` dataset on Hugging Face.
 
 The model (`TinyTurnModel` in [tinyturn/models.py](tinyturn/models.py)) fuses two small branches —
