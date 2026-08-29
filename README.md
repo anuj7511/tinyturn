@@ -11,11 +11,59 @@ a log-mel DS-CNN+TCN encoder and an optional pitch/energy "trajectory" encoder �
 aware pooling and a small fusion MLP, aiming for a model that's cheap enough to run in a real-time
 voice pipeline.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    A1["log-mel spectrogram<br/>(B, T, 40)"]
+    A2["trajectory features<br/>pitch / energy (B, T, d)"]
+
+    subgraph mel["Mel branch"]
+        direction TB
+        B1["DS-CNN x2<br/>depthwise-separable conv"]
+        B2["TCN x3<br/>dilated 1 / 2 / 4"]
+        B3["Endpoint pooling"]
+        B1 --> B2 --> B3
+    end
+
+    subgraph traj["Trajectory branch (optional)"]
+        direction TB
+        C1["DS-CNN x2"]
+        C2["TCN x2<br/>dilated 1 / 2"]
+        C3["Endpoint pooling"]
+        C1 --> C2 --> C3
+    end
+
+    A1 --> B1
+    A2 --> C1
+    B3 --> D["Concat"]
+    C3 --> D
+    D --> E["Fusion MLP<br/>Linear -> ReLU -> Linear"]
+    E --> F["logit"]
+    F --> G["sigmoid -> P(turn complete)"]
+```
+
+Both branches share the same shape (`BranchEncoder` in [tinyturn/models.py](tinyturn/models.py)):
+a couple of depthwise-separable conv blocks, a small dilated TCN stack, then endpoint-aware pooling
+(`EndpointPooling` in [tinyturn/pooling.py](tinyturn/pooling.py)) that gives the model a sharper
+view of the audio right around the point where the speaker stopped talking. `use_trajectory=False`
+is the mel-only variant; the officially-evaluated finalist uses both branches.
+
 ## Official result
 
 The finalist checkpoint (`B1_1s_64k_lambda0.5_5050_seed43`: 1s context, controlled 50:50 real/synthetic
 sampling, hold-loss λ=0.5, seed 43) was evaluated exactly once against the official 31,527-clip
 `smart-turn-data-v3.2-test` set, at temperature-scaled threshold 0.612 (T=1.514):
+
+```mermaid
+flowchart LR
+    A["Official test audio<br/>smart-turn-data-v3.2-test<br/>(31,527 clips)"] --> B["Feature extraction<br/>log-mel + trajectory<br/>context_s = 1.0"]
+    B --> C["TinyTurnModel<br/>frozen checkpoint, seed 43"]
+    C --> D["Temperature scaling<br/>T = 1.514"]
+    D --> E{"P(complete) >= 0.612?"}
+    E -->|yes| F["complete"]
+    E -->|no| G["incomplete / keep listening"]
+```
 
 | Metric | Overall | Real audio only |
 |---|---|---|
@@ -29,7 +77,7 @@ Full breakdown (per-language, per-source, calibration, confidence intervals) is 
 [experiments/official_test_report.json](experiments/official_test_report.json); per-clip
 predictions are in `experiments/official_test_per_clip_results.parquet`. The full methodology,
 ablations, and reasoning behind the finalist selection are written up in
-[planning/PHASE3_RESULTS_step10_distillation_ranking.md](planning/PHASE3_RESULTS_step10_distillation_ranking.md).
+[docs/RESULTS.md](docs/RESULTS.md).
 
 The frozen checkpoint, its config/metrics, and an exported ONNX model (plus an int8-quantized
 variant) live under
@@ -40,13 +88,13 @@ variant) live under
 - `tinyturn/` — the core package: dataset/feature loading, boundary estimation, model
   definitions, training loops (incl. distillation and pairwise-ranking variants), evaluation, and
   ONNX export.
-- `scripts_part3/` — the runnable experiment/evaluation scripts built on top of `tinyturn/`,
-  including `run_official_test_evaluation.py`, the script that produced the official result above.
+- `scripts/` — the runnable experiment/evaluation scripts built on top of `tinyturn/`, including
+  `run_official_test_evaluation.py`, the script that produced the official result above.
 - `tests/` — unit tests for the `tinyturn` package.
 - `experiments/` — official-result artifacts and the audits that gated the finalist choice
   (matched-recall audit, VAD boundary diagnostic, padding counterfactual, temperature scaling,
   ground-truth-conditioned metric audit).
-- `planning/` — the final results write-up.
+- `docs/` — the final results write-up ([RESULTS.md](docs/RESULTS.md)).
 
 This is a curated subset of a larger research project; per-experiment checkpoints, exploratory
 notebooks, and intermediate logs are not included here.
@@ -73,7 +121,7 @@ Reproduce the official evaluation (requires the frozen checkpoint under `experim
 access to download the official test set from Hugging Face):
 
 ```bash
-python scripts_part3/run_official_test_evaluation.py --phase fetch_features
-python scripts_part3/run_official_test_evaluation.py --phase infer
-python scripts_part3/run_official_test_evaluation.py --phase report
+python scripts/run_official_test_evaluation.py --phase fetch_features
+python scripts/run_official_test_evaluation.py --phase infer
+python scripts/run_official_test_evaluation.py --phase report
 ```
