@@ -1,0 +1,27 @@
+{
+  "checkpoint": "experiments\\B1_1s_64k_lambda0.5_5050_seed43\\checkpoint.pt",
+  "n_parameters": 109979,
+  "macs": 7045264,
+  "fp32_onnx_size_bytes": 474165,
+  "int8_onnx_size_bytes": 208596,
+  "size_reduction_pct": 56.01,
+  "parity_check_val_clip0": {
+    "torch_fp32_logit": -2.216878,
+    "onnx_fp32_logit": -2.216879,
+    "onnx_int8_logit": -2.208822,
+    "torch_vs_onnx_fp32_abs_diff": 1e-06,
+    "torch_vs_onnx_int8_abs_diff": 0.008056
+  },
+  "latency_fp32_ms": {
+    "p50_ms": 11.301,
+    "p95_ms": 13.755,
+    "mean_ms": 11.566,
+    "n_runs": 100
+  },
+  "latency_int8_ms": {
+    "p50_ms": 17.842,
+    "p95_ms": 21.023,
+    "mean_ms": 18.196,
+    "n_runs": 100
+  }
+}

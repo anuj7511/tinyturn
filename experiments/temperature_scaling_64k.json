@@ -1,0 +1,174 @@
+{
+  "B1_64k_baseline": {
+    "42": {
+      "temperature": 0.9746,
+      "threshold_raw": 0.81,
+      "threshold_temp_scaled": 0.8157,
+      "calibration_calib_raw": {
+        "brier": 0.13838800438656862,
+        "ece": 0.02118483597265175
+      },
+      "calibration_calib_temp_scaled": {
+        "brier": 0.13832410320094402,
+        "ece": 0.022759318338620573
+      },
+      "calibration_val_raw": {
+        "brier": 0.14441742106193062,
+        "ece": 0.031268133121283
+      },
+      "calibration_val_temp_scaled": {
+        "brier": 0.14449404377436537,
+        "ece": 0.03796565222659605
+      },
+      "operating_point_check": {
+        "recall_at_fcr05_calib_raw": 0.4406,
+        "recall_at_fcr05_calib_temp_scaled": 0.4406,
+        "val_recall_at_own_threshold_raw": 0.4756,
+        "val_recall_at_own_threshold_temp_scaled": 0.4756,
+        "note": "raw vs temp-scaled should match (monotonic transform) -- confirms T doesn't change the decision rule, only the probability's calibration quality."
+      }
+    },
+    "43": {
+      "temperature": 1.107,
+      "threshold_raw": 0.8255,
+      "threshold_temp_scaled": 0.8028,
+      "calibration_calib_raw": {
+        "brier": 0.1356169593041132,
+        "ece": 0.03467125461271898
+      },
+      "calibration_calib_temp_scaled": {
+        "brier": 0.13553924970906459,
+        "ece": 0.029853955147874024
+      },
+      "calibration_val_raw": {
+        "brier": 0.144685616067189,
+        "ece": 0.04191768605043129
+      },
+      "calibration_val_temp_scaled": {
+        "brier": 0.14374011690730065,
+        "ece": 0.03006321275621026
+      },
+      "operating_point_check": {
+        "recall_at_fcr05_calib_raw": 0.4806,
+        "recall_at_fcr05_calib_temp_scaled": 0.4806,
+        "val_recall_at_own_threshold_raw": 0.4981,
+        "val_recall_at_own_threshold_temp_scaled": 0.4981,
+        "note": "raw vs temp-scaled should match (monotonic transform) -- confirms T doesn't change the decision rule, only the probability's calibration quality."
+      }
+    },
+    "44": {
+      "temperature": 1.3302,
+      "threshold_raw": 0.8761,
+      "threshold_temp_scaled": 0.8131,
+      "calibration_calib_raw": {
+        "brier": 0.13741433683892454,
+        "ece": 0.04491771688174841
+      },
+      "calibration_calib_temp_scaled": {
+        "brier": 0.13556915643761938,
+        "ece": 0.020590164926385622
+      },
+      "calibration_val_raw": {
+        "brier": 0.14707168252854214,
+        "ece": 0.06135067374650022
+      },
+      "calibration_val_temp_scaled": {
+        "brier": 0.14294076421825935,
+        "ece": 0.02733958797027129
+      },
+      "operating_point_check": {
+        "recall_at_fcr05_calib_raw": 0.4343,
+        "recall_at_fcr05_calib_temp_scaled": 0.4343,
+        "val_recall_at_own_threshold_raw": 0.4656,
+        "val_recall_at_own_threshold_temp_scaled": 0.4656,
+        "note": "raw vs temp-scaled should match (monotonic transform) -- confirms T doesn't change the decision rule, only the probability's calibration quality."
+      }
+    }
+  },
+  "B1_64k_lambda0.5_5050": {
+    "42": {
+      "temperature": 2.1495,
+      "threshold_raw": 0.5177,
+      "threshold_temp_scaled": 0.5082,
+      "calibration_calib_raw": {
+        "brier": 0.19755985340166438,
+        "ece": 0.20731651802328613
+      },
+      "calibration_calib_temp_scaled": {
+        "brier": 0.18302145176923212,
+        "ece": 0.16272243669312064
+      },
+      "calibration_val_raw": {
+        "brier": 0.19891645958238616,
+        "ece": 0.19595878596797814
+      },
+      "calibration_val_temp_scaled": {
+        "brier": 0.18416756863297523,
+        "ece": 0.16580405953507665
+      },
+      "operating_point_check": {
+        "recall_at_fcr05_calib_raw": 0.4643,
+        "recall_at_fcr05_calib_temp_scaled": 0.4643,
+        "val_recall_at_own_threshold_raw": 0.4681,
+        "val_recall_at_own_threshold_temp_scaled": 0.4681,
+        "note": "raw vs temp-scaled should match (monotonic transform) -- confirms T doesn't change the decision rule, only the probability's calibration quality."
+      }
+    },
+    "43": {
+      "temperature": 1.5142,
+      "threshold_raw": 0.666,
+      "threshold_temp_scaled": 0.612,
+      "calibration_calib_raw": {
+        "brier": 0.16376531780645373,
+        "ece": 0.13402111480294313
+      },
+      "calibration_calib_temp_scaled": {
+        "brier": 0.1614047689686052,
+        "ece": 0.12077181280355083
+      },
+      "calibration_val_raw": {
+        "brier": 0.16736847830822485,
+        "ece": 0.11172033897671475
+      },
+      "calibration_val_temp_scaled": {
+        "brier": 0.16290213725183925,
+        "ece": 0.10614833992732463
+      },
+      "operating_point_check": {
+        "recall_at_fcr05_calib_raw": 0.4681,
+        "recall_at_fcr05_calib_temp_scaled": 0.4681,
+        "val_recall_at_own_threshold_raw": 0.4981,
+        "val_recall_at_own_threshold_temp_scaled": 0.4981,
+        "note": "raw vs temp-scaled should match (monotonic transform) -- confirms T doesn't change the decision rule, only the probability's calibration quality."
+      }
+    },
+    "44": {
+      "temperature": 1.2081,
+      "threshold_raw": 0.6926,
+      "threshold_temp_scaled": 0.662,
+      "calibration_calib_raw": {
+        "brier": 0.1568468808353667,
+        "ece": 0.10274284120595006
+      },
+      "calibration_calib_temp_scaled": {
+        "brier": 0.15647557961043493,
+        "ece": 0.10047848864861657
+      },
+      "calibration_val_raw": {
+        "brier": 0.15869403370855198,
+        "ece": 0.0889511186927754
+      },
+      "calibration_val_temp_scaled": {
+        "brier": 0.15832739875169463,
+        "ece": 0.09072661338213925
+      },
+      "operating_point_check": {
+        "recall_at_fcr05_calib_raw": 0.4418,
+        "recall_at_fcr05_calib_temp_scaled": 0.4418,
+        "val_recall_at_own_threshold_raw": 0.4481,
+        "val_recall_at_own_threshold_temp_scaled": 0.4481,
+        "note": "raw vs temp-scaled should match (monotonic transform) -- confirms T doesn't change the decision rule, only the probability's calibration quality."
+      }
+    }
+  }
+}

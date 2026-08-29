@@ -1,0 +1,6 @@
+resemblyzer==0.1.4  # D11 speaker/TTS-voice embeddings for clustering (pulls in webrtcvad, torch already present)
+silero-vad==6.2.1   # E5 VAD endpoint sensitivity sweep -- a genuinely different detector family vs. the
+                    # energy-threshold estimator already used elsewhere. NOTE: also installs torchaudio
+                    # 2.11.0, whose read_audio() requires torchcodec we did NOT install -- work around this
+                    # by loading audio via soundfile and passing the waveform tensor directly to
+                    # get_speech_timestamps(wav, model, sampling_rate=sr) instead of silero_vad.read_audio().
