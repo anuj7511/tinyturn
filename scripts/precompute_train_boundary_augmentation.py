@@ -8,7 +8,7 @@ boundary only, so drift in the augmented-training boundary set can't leak into w
 threshold sits. Train is the only split that needs this precomputed.
 
 Reuses the exact alt_threshold_speech_end / silero_speech_end functions from
-run_8f_vad_boundary_diagnostic_v2.py unmodified -- these must stay byte-identical to what 8f/8g
+vad_boundary_diagnostic_full_val.py unmodified -- these must stay byte-identical to what 8f/8g
 already gate A0's val predictions against, or "robust to the same boundary variants 8g qualifies
 against" wouldn't hold.
 
@@ -27,7 +27,7 @@ import pandas as pd
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from scripts.run_8f_vad_boundary_diagnostic_v2 import (
+from scripts.vad_boundary_diagnostic_full_val import (
     alt_threshold_speech_end, silero_speech_end, _load_wav,
 )
 

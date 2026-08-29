@@ -1,8 +1,8 @@
 """
 Canonical speech-end (turn-boundary) estimator.
 
-Extracted from `scripts/d2_decode_transcribe.py::compute_signal_features_v3` (estimator "A" /
-the fixed energy threshold, per `e5_prediction_deltas.py`'s naming) -- this is the one boundary
+Extracted from `scripts/decode_and_transcribe_train_sample.py::compute_signal_features_v3` (estimator "A" /
+the fixed energy threshold, per `boundary_estimator_prediction_deltas.py`'s naming) -- this is the one boundary
 convention reused identically across D2, D6 and E5 throughout Part 3 of the EDA. It is kept
 standalone here (it was inlined three times upstream) so Step 1's preprocessing pipeline has one
 place that defines "canonical v0 boundary", per the brief's Step 1 instruction to pick one estimator

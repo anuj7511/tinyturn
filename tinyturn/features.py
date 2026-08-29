@@ -1,8 +1,8 @@
 """
 Trajectory-branch feature extraction (Section 3): relative log energy, low-energy/pause
 probability, spectral tilt, spectral flux, syllabic-envelope activity, plus an optional pyin-based
-F0 scalar (B1-f0 ablation only). Reuses the exact DSP conventions from `d5_trajectories.py` and
-`d2_decode_transcribe.py`'s Hilbert-envelope logic rather than reimplementing them, per the brief's
+F0 scalar (B1-f0 ablation only). Reuses the exact DSP conventions from `plot_pitch_energy_trajectories.py` and
+`decode_and_transcribe_train_sample.py`'s Hilbert-envelope logic rather than reimplementing them, per the brief's
 explicit instruction ("reuse rather than reimplement").
 
 All channels are computed on a common 10ms-hop frame grid aligned to `frame_valid_mask` in
@@ -83,7 +83,7 @@ def compute_trajectory_channels(y: np.ndarray, sr: int, valid_sample_mask: np.nd
 
 
 def _syllabic_envelope_activity(y, sr, active_frames, hop_length, n_frames):
-    """Hilbert-envelope peak-picking, reused verbatim from d2_decode_transcribe.py's
+    """Hilbert-envelope peak-picking, reused verbatim from decode_and_transcribe_train_sample.py's
     speaking_rate_slope logic, but returns a continuous per-frame envelope-activity trace (the
     smoothed band-passed envelope itself, gated to active regions) rather than collapsing to a
     single slope scalar -- this is the "syllabic-envelope activity" proxy channel the brief asks

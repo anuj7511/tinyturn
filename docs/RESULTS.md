@@ -10,13 +10,13 @@ experiment is a real, kept result but doesn't unseat either finalist; the finali
 
 ## 1. Metric audit: 8g's flip-rate gate was inflated
 
-8g's "safety-critical flip rate" (`run_8g_qualify_teacher_v2.py::direction_specific_gates`)
+8g's "safety-critical flip rate" (`qualify_teacher_a0_ci_gated.py::direction_specific_gates`)
 conditions only on the **canonical prediction** (canonical says incomplete → alt flips to
 complete). It never checks whether canonical was actually right — a flip counted there can be a
 *correction* (truth is really complete, canonical was wrong, the alt boundary fixed it), not a
 safety problem.
 
-A new script, `scripts/run_metric_audit.py`, recomputes the same event conditioned on ground
+A new script, `scripts/ground_truth_conditioned_metric_audit.py`, recomputes the same event conditioned on ground
 truth **and** canonical correctness:
 
 ```text
@@ -61,7 +61,7 @@ VAD audit on these checkpoints; the AUC gate alone disqualifies both.
 
 D1/D2 changed two things vs. the untouched B1 baseline simultaneously — teacher logits *and*
 student boundary augmentation — so "distillation failed" wasn't actually attributable to
-distillation alone. A control, **D0** (`scripts/run_step10_distill_d0.py`): identical
+distillation alone. A control, **D0** (`scripts/train_distillation_isolation_control.py`): identical
 protocol, boundary augmentation enabled, but hard labels only (`alpha=1.0`, so
 `train_distill._distill_loss`'s soft/teacher term is multiplied by zero and contributes nothing).
 
@@ -87,8 +87,8 @@ augmentation is ever revisited for B1 independent of distillation (it currently 
 project as part of A0's 8g remediation retrain and these D0/D1/D2 controls, never evaluated as a
 plain B1 training-time addition on its own without either teacher logits or hold-loss terms).
 
-New code: `tinyturn/train_distill.py`, `scripts/precompute_teacher_logits_a0_boundary_robust.py`,
-`scripts/run_step10_distill.py`. `tinyturn/dataset.py` gained `augment_boundaries` and
+New code: `tinyturn/train_distill.py`, `scripts/precompute_teacher_logits.py`,
+`scripts/train_distillation_ablation.py`. `tinyturn/dataset.py` gained `augment_boundaries` and
 `teacher_logit_path` support (mirroring `WhisperTurnDataset`'s remediation-retrain mechanism); the
 on-disk feature cache is disabled whenever `augment_boundaries=True` since it's keyed by
 `(row_id, context_s)` only, not by which boundary produced the window.
@@ -104,7 +104,7 @@ L = L_final_BCE + 0.1 * max(0, 0.2 - s_final + s_hold)
 
 Main BCE stays final-clips-only; checkpoint selection stays final-clips-only; no student boundary
 augmentation (not part of this experiment's recipe). New code: `tinyturn/train_ranking.py`,
-`scripts/run_step10_ranking.py`.
+`scripts/train_pairwise_ranking.py`.
 
 3-seed result (seeds 42/43/44, identical plateau protocol: epochs≤40, early_stop_patience=6,
 lr_schedule=plateau — see Section 5 for why this took a retrain):
@@ -159,9 +159,9 @@ complete-turn recall). Own-threshold hold-FCR made ranking (real AUC 0.7345) and
 AUC 0.6998) look nearly tied on real-hold FCR (11.3% vs. 11.0%) — a much closer call than the
 headline real-AUC gap suggested, worth checking properly rather than trusting.
 
-`scripts/run_matched_recall_audit.py` recomputes this correctly, and also fixes a second,
+`scripts/matched_recall_audit.py` recomputes this correctly, and also fixes a second,
 subtler issue found in the *existing* precedent for this kind of analysis
-(`run_step9_controlled_rerun.py`): that script selects its threshold from `val`'s own recall curve,
+(`train_pause_sampling_comparison.py`): that script selects its threshold from `val`'s own recall curve,
 then reads hold-FCR off that *same* `val` split — circular. This audit selects the threshold from
 the **calibration** split's recall curve (targeting 90%/95% recall on the complete class), then
 evaluates recall / hold-FCR / short-complete / response-particle recall on **validation only**. No
@@ -216,7 +216,7 @@ here (no GPU-accelerated code path for this DSP pipeline; the bottleneck is pure
 multiprocessing gave a **~4.3x speedup** (~7.9 clips/s), finishing all 5 shards in 23 minutes.
 Appends only: the existing 15,998 D2 rows and their split assignments are untouched; every new row
 is `split="train"` only, so val/calib stay fixed across tiers exactly as the brief requires.
-(`scripts/build_32k_scale_tier.py`.)
+(`scripts/build_data_scale_tier.py`.)
 
 Trained B1 baseline and the user-selected obj(`λ=0.5 50:50`, chosen for having the best real-hold-FCR
 of the four Section 5 arms) at 32k, one seed (42), identical plateau protocol to their 16k
@@ -278,21 +278,21 @@ and is not implied by this result**; that would need its own explicit decision.
 
 Artifacts: `experiments/B1_1s_32k_baseline/`, `experiments/B1_1s_32k_lambda0.5_5050/`,
 `experiments/B1_1s_64k_baseline/`, `experiments/B1_1s_64k_lambda0.5_5050/`,
-`scripts/build_32k_scale_tier.py` (generalized to accept `--shards` for any tier),
-`scripts/run_step10_32k_baseline.py`, `scripts/run_step10_32k_lambda0.5_5050.py`,
-`scripts/run_step10_64k_baseline.py`, `scripts/run_step10_64k_lambda0.5_5050.py`.
+`scripts/build_data_scale_tier.py` (generalized to accept `--shards` for any tier),
+`scripts/train_b1_32k_baseline.py`, `scripts/train_b1_32k_lambda0.5_5050.py`,
+`scripts/train_b1_64k_baseline.py`, `scripts/train_b1_64k_lambda0.5_5050.py`.
 
 ## 6c. 64k matched-recall correction + 3-seed 64k confirmation (done)
 
 The Section 6b headline hold-FCR numbers (4.43% `λ=0.5 50:50` vs. 69.25% baseline) were each read at
 that model's **own** FCR=0.05-calibrated threshold — not comparable to each other, and not the
 matched-complete-turn-recall method this project's keep/promotion rules actually use (Section 5b's
-correction). `run_matched_recall_audit_64k.py` (threshold selected on **calib**'s recall curve,
+correction). `matched_recall_audit_64k.py` (threshold selected on **calib**'s recall curve,
 evaluated on **val** only — never the same split) was run first against seed 42 alone, then against
 all three seeds once the confirmation runs below finished.
 
 Trained `B1_1s_64k_baseline_seed{43,44}` and `B1_1s_64k_lambda0.5_5050_seed{43,44}` (4 runs) via
-generalized `--seed` flags on `run_step10_64k_baseline.py` / `run_step10_64k_lambda0.5_5050.py` (the
+generalized `--seed` flags on `train_b1_64k_baseline.py` / `train_b1_64k_lambda0.5_5050.py` (the
 lambda script picks its same-seed baseline checkpoint via `SEED_BASELINE_CHECKPOINTS`). Ran
 sequentially (CPU-only, 16GB RAM — running two `num_workers=6` processes concurrently risks the same
 pagefile exhaustion Section 6b hit), order baseline43 → lambda43 → baseline44 → lambda44. Took ~14h
@@ -340,7 +340,7 @@ Artifacts: `experiments/B1_1s_64k_baseline_seed{43,44}/`,
 `experiments/B1_1s_64k_lambda0.5_5050_seed{43,44}/`, `experiments/matched_recall_audit_64k.json`.
 
 Ground-truth-conditioned VAD-boundary errors (8f-style) for all 6 64k checkpoints are done via the
-new `scripts/run_8f_vad_boundary_diagnostic_b1_64k.py` (never run for B1 at this data scale
+new `scripts/vad_boundary_diagnostic_b1_64k.py` (never run for B1 at this data scale
 before) — combines 8f-v2's boundary computation (cached once at
 `experiments/8f_val_boundaries_cache.parquet` for reuse across checkpoints) with Section 1's
 ground-truth-conditioned introduced-error metrics rather than the superseded flip-rate gate.
@@ -371,9 +371,9 @@ trade-off restated in a third, independent metric — same story, not a new find
 
 Artifacts: `experiments/8f_vad_boundary_diagnostic_b1_64k.json`,
 `experiments/8f_val_boundaries_cache.parquet`,
-`scripts/run_8f_vad_boundary_diagnostic_b1_64k.py`.
+`scripts/vad_boundary_diagnostic_b1_64k.py`.
 
-**Padding counterfactual (8e-style)**, via the new `scripts/run_8e_padding_counterfactual_b1_64k.py`
+**Padding counterfactual (8e-style)**, via the new `scripts/padding_counterfactual_b1_64k.py`
 — never run for any B1 model before (the existing `8e_padding_counterfactual.json` files are all
 A0/Whisper). Genuine data-characteristic finding, not a script bug: at `context_s=1.0`, padding is a
 far rarer scenario than at A0's `context_s=4.0` — val `last_active_t` has median 6.73s, and even the
@@ -401,7 +401,7 @@ uncertainty for baseline seed44 specifically that a larger padding-sensitive sam
 in this val split) would be needed to resolve.
 
 Artifacts: `experiments/8e_padding_counterfactual_b1_64k.json`,
-`scripts/run_8e_padding_counterfactual_b1_64k.py`.
+`scripts/padding_counterfactual_b1_64k.py`.
 
 With this, the "padding/VAD/real/implicit/hold" evaluation suite (item 7 of the user's remaining
 sequence) is now complete for the 64k checkpoints: VAD-boundary (above), padding (above), real/
@@ -418,7 +418,7 @@ temperature `T` per checkpoint (Guo et al. 2017: minimize BCE(logit/T, label) on
 never val/test) before re-selecting the threshold, motivated directly by Section 6c's finding that
 `λ=0.5 50:50`'s raw ECE is much worse than the baseline's (up to 0.196).
 
-New `scripts/run_temperature_scaling_64k.py`. Verified explicitly, not assumed: temperature
+New `scripts/calibrate_temperature_scaling_64k.py`. Verified explicitly, not assumed: temperature
 scaling is a strictly monotonic transform of the logit (T>0), so it cannot change AUC or any
 recall/FCR at a matched operating point — only the probability VALUE at a given decision changes.
 Confirmed on every one of the 6 checkpoints: val recall at the (raw-threshold, raw-prob) operating
@@ -442,7 +442,7 @@ fit on calib only, and calib/val aren't identical distributions, so a calib-opti
 exactly val-optimal; the direction and magnitude of the fix is what matters, not that every single
 seed improves.
 
-Artifacts: `experiments/temperature_scaling_64k.json`, `scripts/run_temperature_scaling_64k.py`.
+Artifacts: `experiments/temperature_scaling_64k.json`, `scripts/calibrate_temperature_scaling_64k.py`.
 
 Item 6 done. Only item 8 remains: freeze one checkpoint, evaluate once against the official
 31,527-row HF test set, export, and submit. **This requires an explicit decision this project hasn't
@@ -507,7 +507,7 @@ same pattern D2's real-audio subset has). Running ASR against 5,863 fresh clips 
 judged out of scope for "run the official test once" and wasn't requested — the slice above covers
 synthetic clips only; real-audio rows are excluded, not silently folded in as "not implicit."
 
-**Export**: `scripts/run_frozen_export.py` — FP32 ONNX (474,165 bytes) and INT8 dynamic-
+**Export**: `scripts/export_frozen_checkpoint_onnx.py` — FP32 ONNX (474,165 bytes) and INT8 dynamic-
 quantized ONNX (208,596 bytes, 56% smaller) from the frozen checkpoint, independent of the test set.
 Parity check against a real val clip: PyTorch vs. FP32-ONNX logits match to 1e-6; INT8 introduces a
 small, expected drift (0.008 logit units). **Counterintuitive but measured, not assumed**: INT8 was
@@ -519,7 +519,7 @@ Artifacts: `experiments/B1_1s_64k_lambda0.5_5050_seed43/FROZEN_MANIFEST.json`,
 `data_cache/official_test_features.npz`, `data_cache/official_test_metadata.parquet`,
 `experiments/official_test_per_clip_results.parquet`, `experiments/official_test_report.json`,
 `experiments/B1_1s_64k_lambda0.5_5050_seed43/{model.onnx,model_int8.onnx,export_manifest.json}`,
-`scripts/run_official_test_evaluation.py`, `scripts/run_frozen_export.py`.
+`scripts/run_official_test_evaluation.py`, `scripts/export_frozen_checkpoint_onnx.py`.
 
 **Item 8 done. This closes the user's entire 8-step remaining sequence. No further model changes
 are made per the user's explicit instruction — the checkpoint, temperature, and threshold above are
@@ -535,10 +535,10 @@ final.**
 - `experiments/P1ab_lambda0.5_{all,5050}_seed42_plateau/` — Section 5 protocol-matched retrains.
 - `experiments/matched_recall_audit_calib_then_val.json`,
   `experiments/matched_recall_audit_seed42.png` — Section 5b.
-- New code: `scripts/run_metric_audit.py`, `scripts/precompute_teacher_logits_a0_boundary_robust.py`,
-  `tinyturn/train_distill.py`, `scripts/run_step10_distill.py`, `tinyturn/train_ranking.py`,
-  `scripts/run_step10_ranking.py`, `scripts/run_step10_lambda05_seed42_plateau.py`,
-  `scripts/run_matched_recall_audit.py`.
+- New code: `scripts/ground_truth_conditioned_metric_audit.py`, `scripts/precompute_teacher_logits.py`,
+  `tinyturn/train_distill.py`, `scripts/train_distillation_ablation.py`, `tinyturn/train_ranking.py`,
+  `scripts/train_pairwise_ranking.py`, `scripts/train_b1_lambda0.5_seed42_plateau_protocol_fix.py`,
+  `scripts/matched_recall_audit.py`.
   `tinyturn/dataset.py` and `tinyturn/pause_events.py` gained `augment_boundaries`/`teacher_logit`
   support.
 
